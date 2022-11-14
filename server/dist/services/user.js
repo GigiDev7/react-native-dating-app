@@ -25,9 +25,15 @@ const createAccessToken = (userId) => {
 const comparePasswords = (password, hashedPassword) => {
     return bcrypt_1.default.compare(password, hashedPassword);
 };
-const registerUser = (userData) => {
+const hashPassword = (password) => __awaiter(void 0, void 0, void 0, function* () {
+    const salt = yield bcrypt_1.default.genSalt(12);
+    return yield bcrypt_1.default.hash(password, salt);
+});
+const registerUser = (userData) => __awaiter(void 0, void 0, void 0, function* () {
+    const hashedPassword = yield hashPassword(userData.password);
+    userData.password = hashedPassword;
     return userSchema_1.default.create(userData);
-};
+});
 exports.registerUser = registerUser;
 const loginUser = (email, password) => __awaiter(void 0, void 0, void 0, function* () {
     const user = yield userSchema_1.default.findOne({ email });

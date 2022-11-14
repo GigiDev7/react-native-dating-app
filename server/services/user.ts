@@ -15,7 +15,14 @@ const comparePasswords = (password: string, hashedPassword: string) => {
   return bcrypt.compare(password, hashedPassword);
 };
 
-export const registerUser = (userData: IUser) => {
+const hashPassword = async (password: string) => {
+  const salt = await bcrypt.genSalt(12);
+  return await bcrypt.hash(password, salt);
+};
+
+export const registerUser = async (userData: IUser) => {
+  const hashedPassword = await hashPassword(userData.password);
+  userData.password = hashedPassword;
   return User.create(userData);
 };
 
