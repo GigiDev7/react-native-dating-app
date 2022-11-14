@@ -9,5 +9,5 @@ const validationHandler_1 = require("../middlewares/validationHandler");
 const authValidator_1 = require("../middlewares/authValidator");
 const router = express_1.default.Router();
 router.route("/register").post(authValidator_1.registerValidation, validationHandler_1.validationHandler, user_1.register);
-//router.route("/login").post();
+router.route("/login").post(authValidator_1.loginValidation, validationHandler_1.validationHandler, user_1.login);
 exports.default = router;

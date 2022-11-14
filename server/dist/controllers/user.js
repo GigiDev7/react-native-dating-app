@@ -20,7 +20,7 @@ var __rest = (this && this.__rest) || function (s, e) {
     return t;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.register = void 0;
+exports.login = exports.register = void 0;
 const user_1 = require("../services/user");
 const register = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -33,3 +33,15 @@ const register = (req, res, next) => __awaiter(void 0, void 0, void 0, function*
     }
 });
 exports.register = register;
+const login = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { user, token } = yield (0, user_1.loginUser)(req.body.email, req.body.password);
+        const _b = user._doc, { password, __v } = _b, userData = __rest(_b, ["password", "__v"]);
+        userData.token = token;
+        res.status(200).json(userData);
+    }
+    catch (error) {
+        next(error);
+    }
+});
+exports.login = login;

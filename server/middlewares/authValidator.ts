@@ -1,5 +1,21 @@
 import { checkSchema } from "express-validator";
 
+export const loginValidation = checkSchema({
+  email: {
+    in: ["body"],
+    isEmail: {
+      errorMessage: "Please enter a valid email address",
+    },
+  },
+  password: {
+    in: ["body"],
+    isLength: {
+      options: { min: 6 },
+      errorMessage: "Password must be at least 6 characters long",
+    },
+  },
+});
+
 export const registerValidation = checkSchema({
   firstname: {
     in: ["body"],

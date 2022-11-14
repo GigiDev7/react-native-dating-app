@@ -7,9 +7,11 @@ export const errorsHandler = (
   next: NextFunction
 ) => {
   if (err.name === "Validation Error") {
-    res.status(400).json({ message: err.message });
+    res.status(400).json({ message: err.message || "Something went wrong" });
   } else if (err.code === 11000) {
     res.status(400).json({ message: "Email already exists" });
+  } else if (err.name === "Authentication Error") {
+    res.status(401).json({ message: err.message || "Something went wrong" });
   } else {
     res.status(500).json(err);
   }
