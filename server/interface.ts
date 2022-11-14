@@ -1,3 +1,5 @@
+import { Request } from "express";
+
 export interface IUser {
   firstname: string;
   lastname: string;
@@ -9,4 +11,8 @@ export interface IUser {
   likes?: string[];
   likedBy?: string[];
   matches?: string[];
+}
+
+export interface CustomRequest extends Request {
+  user?: IUser | null;
 }

@@ -2,11 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import User from "../models/userSchema";
 import jwt from "jsonwebtoken";
 import { CustomError } from "../utils/customError";
-import { IUser } from "../interface";
-
-interface CustomRequest extends Request {
-  user?: IUser | null;
-}
+import { CustomRequest } from "../interface";
 
 export const protectAuth = (
   req: CustomRequest,
