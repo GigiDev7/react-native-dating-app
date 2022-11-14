@@ -33,6 +33,7 @@ const userSchema = new mongoose_1.default.Schema({
     },
     gender: {
         type: String,
+        required: [true, "Gender is required"],
     },
     email: {
         type: String,

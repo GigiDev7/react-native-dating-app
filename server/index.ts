@@ -2,6 +2,7 @@ import express, { Express, Request, Response } from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 import { connect } from "./connectDB";
+import { errorsHandler } from "./middlewares/errorsHandler";
 import userRouter from "./routes/user";
 
 dotenv.config();
@@ -13,6 +14,9 @@ app.use(cors());
 
 //routes
 app.use("/user", userRouter);
+
+//error handler
+app.use(errorsHandler);
 
 app.listen(8000, () => {
   connect();
