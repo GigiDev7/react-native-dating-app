@@ -11,6 +11,9 @@ const errorsHandler = (err, req, res, next) => {
     else if (err.name === "Authentication Error") {
         res.status(401).json({ message: err.message || "Something went wrong" });
     }
+    else if (err.name === "Authorization Error") {
+        res.status(401).json({ message: err.message || "Something went wrong" });
+    }
     else {
         res.status(500).json(err);
     }
