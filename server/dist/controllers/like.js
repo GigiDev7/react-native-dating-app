@@ -10,7 +10,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.like = void 0;
-/* import { CustomRequest } from "../interface"; */
 const match_1 = require("../services/match");
 const like = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {

@@ -1,5 +1,4 @@
 import { NextFunction, Response, Request } from "express";
-/* import { CustomRequest } from "../interface"; */
 import { likeUser } from "../services/match";
 
 export const like = async (req: Request, res: Response, next: NextFunction) => {
