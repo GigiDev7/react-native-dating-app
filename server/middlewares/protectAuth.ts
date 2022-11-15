@@ -2,10 +2,10 @@ import { Request, Response, NextFunction } from "express";
 import User from "../models/userSchema";
 import jwt from "jsonwebtoken";
 import { CustomError } from "../utils/customError";
-import { CustomRequest } from "../interface";
+import { CustomRequest, IUser } from "../interface";
 
 export const protectAuth = (
-  req: CustomRequest,
+  req: Request,
   res: Response,
   next: NextFunction
 ) => {
@@ -24,7 +24,8 @@ export const protectAuth = (
         throw new CustomError("Authorization Error", "Authorization failed");
       }
       try {
-        req.user = await User.findById(decodedData.id, "-password -__v");
+        const user = await User.findById(decodedData.id, "-password -__v");
+        if (user) (req as any).user = user as IUser;
         next();
       } catch (error) {
         next(error);

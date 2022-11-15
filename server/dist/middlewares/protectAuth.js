@@ -28,7 +28,9 @@ const protectAuth = (req, res, next) => {
             throw new customError_1.CustomError("Authorization Error", "Authorization failed");
         }
         try {
-            req.user = yield userSchema_1.default.findById(decodedData.id, "-password -__v");
+            const user = yield userSchema_1.default.findById(decodedData.id, "-password -__v");
+            if (user)
+                req.user = user;
             next();
         }
         catch (error) {

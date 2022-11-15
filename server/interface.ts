@@ -1,6 +1,7 @@
-import { Request } from "express";
+import { Types } from "mongoose";
 
 export interface IUser {
+  _id: Types.ObjectId;
   firstname: string;
   lastname: string;
   age: number;
@@ -11,8 +12,4 @@ export interface IUser {
   likes?: string[];
   likedBy?: string[];
   matches?: string[];
-}
-
-export interface CustomRequest extends Request {
-  user?: IUser | null;
 }

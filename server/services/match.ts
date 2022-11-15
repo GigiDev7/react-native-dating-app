@@ -3,8 +3,9 @@ import { CustomError } from "../utils/customError";
 
 export const likeUser = async (likedById: string, userId: string) => {
   try {
-    const user = await User.findById(likedById);
-    const likedUser = await User.findById(userId);
+    let isMatch = false;
+    const user = await User.findById(likedById, "-password");
+    const likedUser = await User.findById(userId, "-password");
 
     if (user && likedUser) {
       user.likes.push(userId);
@@ -13,13 +14,16 @@ export const likeUser = async (likedById: string, userId: string) => {
       if (user.likedBy.includes(userId)) {
         user.matches.push(userId);
         likedUser.matches.push(likedById);
+        isMatch = true;
       }
       await user.save();
       await likedUser.save();
+
+      return { user, likedUser, isMatch };
     } else {
       throw new CustomError("Data error", "Could not find user");
     }
   } catch (error) {
-    throw new CustomError("Error", "Failed");
+    throw new CustomError("Error", "User not found");
   }
 };
