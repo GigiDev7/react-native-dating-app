@@ -1,7 +1,15 @@
 import { View, ImageBackground, StyleSheet, Text } from "react-native";
 import Button from "../components/ui/Button";
 
-const NotAuth = () => {
+const NotAuth = ({ navigation }) => {
+  const handleNavigation = (type) => {
+    if (type === "login") {
+      navigation.navigate("Login");
+    } else {
+      navigation.navigate("Register");
+    }
+  };
+
   return (
     <ImageBackground
       source={require("../assets/tinder.png")}
@@ -10,10 +18,14 @@ const NotAuth = () => {
       <Text style={styles.title}>Meet new people</Text>
       <View style={styles.btnContainer}>
         <View style={styles.btn}>
-          <Button type="login">Login</Button>
+          <Button onPress={() => handleNavigation("login")} type="login">
+            Login
+          </Button>
         </View>
         <View>
-          <Button type="register">Register</Button>
+          <Button onPress={() => handleNavigation("register")} type="register">
+            Register
+          </Button>
         </View>
       </View>
     </ImageBackground>

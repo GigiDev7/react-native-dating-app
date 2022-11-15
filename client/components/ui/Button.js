@@ -1,8 +1,10 @@
 import { Pressable, StyleSheet, Text } from "react-native";
+import { Colors } from "../../utils/constants";
 
-const Button = ({ children, type }) => {
+const Button = ({ children, type, onPress }) => {
   return (
     <Pressable
+      onPress={onPress}
       style={({ pressed }) => [
         styles.button,
         pressed && styles.pressed,
@@ -22,10 +24,10 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   loginBtn: {
-    backgroundColor: "#C73F3F",
+    backgroundColor: Colors.primary,
   },
   registerBtn: {
-    backgroundColor: "#AB3737",
+    backgroundColor: Colors.secondary,
   },
   pressed: {
     opacity: 0.7,
