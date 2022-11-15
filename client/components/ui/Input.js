@@ -8,6 +8,7 @@ const Input = ({ placeholder, type }) => {
         secureTextEntry={type === "password"}
         placeholder={placeholder}
         style={styles.input}
+        keyboardType={type === "number" && "number-pad"}
       />
     </View>
   );
