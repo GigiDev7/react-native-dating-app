@@ -1,14 +1,9 @@
 import { useState } from "react";
-import {
-  Button,
-  Pressable,
-  Text,
-  View,
-  Keyboard,
-  StyleSheet,
-} from "react-native";
+import { Pressable, Text, View, Keyboard, StyleSheet } from "react-native";
 import Input from "../components/ui/Input";
 import RadioInput from "../components/ui/RadioInput";
+import Button from "../components/ui/Button";
+import { Colors } from "../utils/constants";
 
 const RegisterScreen = ({ navigation }) => {
   const [userData, setUserData] = useState({
@@ -26,14 +21,41 @@ const RegisterScreen = ({ navigation }) => {
     });
   };
 
+  const handleChange = (text, fieldName) => {
+    setUserData((prev) => {
+      return { ...prev, [fieldName]: text };
+    });
+  };
+
+  const submitForm = () => {
+    console.log(userData.firstname);
+  };
+
   return (
     <Pressable style={styles.container} onPress={() => Keyboard.dismiss()}>
       <Text style={styles.text}>Create a new account</Text>
-      <Input placeholder="Firstname" />
-      <Input placeholder="Lastname" />
-      <Input placeholder="Age" type="number" />
-      <Input placeholder="Email" />
-      <Input placeholder="Password" type="password" />
+      <Input
+        onChangeText={(text) => handleChange(text, "firstname")}
+        placeholder="Firstname"
+      />
+      <Input
+        onChangeText={(text) => handleChange(text, "lastname")}
+        placeholder="Lastname"
+      />
+      <Input
+        onChangeText={(text) => handleChange(text, "age")}
+        placeholder="Age"
+        type="number"
+      />
+      <Input
+        onChangeText={(text) => handleChange(text, "email")}
+        placeholder="Email"
+      />
+      <Input
+        onChangeText={(text) => handleChange(text, "password")}
+        placeholder="Password"
+        type="password"
+      />
       <Text style={{ color: "white", marginTop: 24 }}>Choose gender</Text>
       <View style={styles.radioContainer}>
         <RadioInput
@@ -47,6 +69,10 @@ const RegisterScreen = ({ navigation }) => {
           label="Female"
         />
       </View>
+
+      <Button onPress={submitForm} style={styles.button}>
+        Submit
+      </Button>
     </Pressable>
   );
 };
@@ -67,6 +93,11 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     width: "40%",
+  },
+  button: {
+    width: "80%",
+    marginTop: 20,
+    backgroundColor: Colors.primary500,
   },
 });
 
