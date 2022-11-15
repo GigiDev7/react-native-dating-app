@@ -1,4 +1,4 @@
-import { Pressable, StyleSheet, Text, View, Keyboard } from "react-native";
+import { Pressable, StyleSheet, Text, Keyboard } from "react-native";
 import Input from "../components/ui/Input";
 import Button from "../components/ui/Button";
 import { Colors } from "../utils/constants";

@@ -1,5 +1,4 @@
 import { TextInput, View, StyleSheet } from "react-native";
-import { Colors } from "../../utils/constants";
 
 const Input = ({ placeholder, type, onChangeText }) => {
   return (
