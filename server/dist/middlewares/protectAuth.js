@@ -24,10 +24,10 @@ const protectAuth = (req, res, next) => {
     }
     const token = headers.authorization.split(" ")[1];
     jsonwebtoken_1.default.verify(token, process.env.JWT_SECRET, (err, decodedData) => __awaiter(void 0, void 0, void 0, function* () {
+        if (err) {
+            throw new customError_1.CustomError("Authorization Error", "Authorization failed");
+        }
         try {
-            if (err) {
-                throw new customError_1.CustomError("Authorization Error", "Authorization failed");
-            }
             req.user = yield userSchema_1.default.findById(decodedData.id, "-password -__v");
             next();
         }

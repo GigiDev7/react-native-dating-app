@@ -43,6 +43,14 @@ const userSchema = new mongoose.Schema(
     matches: {
       type: [String],
     },
+    location: {
+      lat: {
+        type: String,
+      },
+      lng: {
+        type: String,
+      },
+    },
   },
   {
     timestamps: true,
