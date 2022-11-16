@@ -1,7 +1,7 @@
 import { Pressable, StyleSheet, Text } from "react-native";
 import { Colors } from "../../utils/constants";
 
-const Button = ({ children, type, onPress, style }) => {
+const Button = ({ children, type, onPress, style, textStyle }) => {
   return (
     <Pressable
       onPress={onPress}
@@ -12,7 +12,7 @@ const Button = ({ children, type, onPress, style }) => {
         style,
       ]}
     >
-      <Text style={styles.text}>{children}</Text>
+      <Text style={[styles.text, textStyle]}>{children}</Text>
     </Pressable>
   );
 };

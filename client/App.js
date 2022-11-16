@@ -40,7 +40,6 @@ const MainStack = () => {
         headerTitle: ({}) => <HeaderTitle />,
         headerTintColor: Colors.primary,
         headerTitleStyle: { fontSize: 18, fontWeight: "bold" },
-        headerRight: ({}) => <Ionicons name="filter" color="gray" size={24} />,
         headerRightContainerStyle: { paddingRight: 16 },
       }}
     >
