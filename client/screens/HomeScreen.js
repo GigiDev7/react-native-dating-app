@@ -1,7 +1,8 @@
 import { useLayoutEffect, useState } from "react";
-import { Text, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import ModalContainer from "../components/ModalContainer";
+import ProfileCard from "../components/ProfileCard";
 
 const HomeScreen = ({ navigation }) => {
   const [isFilterModalShown, setIsFilterModalShown] = useState(false);
@@ -28,14 +29,23 @@ const HomeScreen = ({ navigation }) => {
   }, []);
 
   return (
-    <View>
-      <Text>Home</Text>
+    <View style={styles.container}>
       <ModalContainer
         visible={isFilterModalShown}
         closeModal={closeFilterModal}
       />
+      <ProfileCard />
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: "center",
+    paddingHorizontal: "1%",
+    backgroundColor: "white",
+  },
+});
 
 export default HomeScreen;
