@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import { Fontisto, Ionicons } from "@expo/vector-icons";
+import { Fontisto, Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import NotAuthScreen from "./screens/NotAuthScreen";
 import LoginScreen from "./screens/LoginScreen";
 import RegisterScreen from "./screens/RegisterScreen";
@@ -9,6 +9,9 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { Colors } from "./utils/constants";
 import HomeScreen from "./screens/HomeScreen";
 import ProfileScreen from "./screens/ProfileScreen";
+import LikeScreen from "./screens/LikeScreen";
+import MesssagesScreen from "./screens/MessagesScreen";
+import HeaderTitle from "./components/HeaderTitle";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -34,6 +37,11 @@ const MainStack = () => {
       screenOptions={{
         tabBarActiveTintColor: Colors.primary,
         tabBarShowLabel: false,
+        headerTitle: ({}) => <HeaderTitle />,
+        headerTintColor: Colors.primary,
+        headerTitleStyle: { fontSize: 18, fontWeight: "bold" },
+        headerRight: ({}) => <Ionicons name="filter" color="gray" size={24} />,
+        headerRightContainerStyle: { paddingRight: 16 },
       }}
     >
       <Tab.Screen
@@ -44,6 +52,24 @@ const MainStack = () => {
         }}
         name="Home"
         component={HomeScreen}
+      />
+      <Tab.Screen
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="heart" color={color} size={size} />
+          ),
+        }}
+        name="Likes"
+        component={LikeScreen}
+      />
+      <Tab.Screen
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons name="message" color={color} size={size} />
+          ),
+        }}
+        name="Messages"
+        component={MesssagesScreen}
       />
       <Tab.Screen
         options={{
