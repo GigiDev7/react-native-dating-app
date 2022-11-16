@@ -1,4 +1,4 @@
-import { Pressable, StyleSheet, Text, Keyboard } from "react-native";
+import { Pressable, StyleSheet, Text, Keyboard, View } from "react-native";
 import Input from "../components/ui/Input";
 import Button from "../components/ui/Button";
 import { Colors } from "../utils/constants";
@@ -35,6 +35,19 @@ const LoginScreen = ({ navigation }) => {
       <Button onPress={handleSubmit} style={styles.button}>
         Login
       </Button>
+
+      <View
+        style={{ flexDirection: "row", alignItems: "center", marginTop: 12 }}
+      >
+        <Text style={{ color: "white" }}>Don't have an account?</Text>
+        <Pressable onPress={() => navigation.navigate("Register")}>
+          <Text
+            style={{ color: Colors.gray, fontWeight: "bold", marginLeft: 4 }}
+          >
+            Register
+          </Text>
+        </Pressable>
+      </View>
     </Pressable>
   );
 };

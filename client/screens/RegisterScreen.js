@@ -73,6 +73,19 @@ const RegisterScreen = ({ navigation }) => {
       <Button onPress={submitForm} style={styles.button}>
         Submit
       </Button>
+
+      <View
+        style={{ flexDirection: "row", alignItems: "center", marginTop: 12 }}
+      >
+        <Text style={{ color: "white" }}>Already have an account?</Text>
+        <Pressable onPress={() => navigation.navigate("Login")}>
+          <Text
+            style={{ color: Colors.gray, fontWeight: "bold", marginLeft: 4 }}
+          >
+            Login
+          </Text>
+        </Pressable>
+      </View>
     </Pressable>
   );
 };
