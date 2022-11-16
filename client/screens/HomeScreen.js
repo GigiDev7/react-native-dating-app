@@ -1,5 +1,14 @@
 import { useLayoutEffect, useState } from "react";
-import { Text, View, Modal, StyleSheet } from "react-native";
+import {
+  Text,
+  View,
+  Modal,
+  StyleSheet,
+  Pressable,
+  Keyboard,
+  KeyboardAvoidingView,
+  ScrollView,
+} from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import Button from "../components/ui/Button";
 import FilterForm from "../components/FilterForm";
@@ -36,25 +45,35 @@ const HomeScreen = ({ navigation }) => {
         animationType="slide"
         visible={isFilterModalShown}
       >
-        <View style={styles.container}>
-          <View style={styles.titleWrapper}>
-            <Text style={styles.title}>Date filters</Text>
-            <Button
-              textStyle={{
-                color: "black",
-                fontSize: "14px",
-                fontWeight: "bold",
-              }}
-              style={styles.button}
-              onPress={closeFilterModal}
-            >
-              Done
-            </Button>
-          </View>
-          <View style={styles.formContainer}>
-            <FilterForm />
-          </View>
-        </View>
+        <KeyboardAvoidingView
+          style={{ flex: 1 }}
+          keyboardVerticalOffset={10}
+          behavior="padding"
+        >
+          <ScrollView style={{ flex: 1 }}>
+            <Pressable style={{ flex: 1 }} onPress={() => Keyboard.dismiss()}>
+              <View style={styles.container}>
+                <View style={styles.titleWrapper}>
+                  <Text style={styles.title}>Date filters</Text>
+                  <Button
+                    textStyle={{
+                      color: "black",
+                      fontSize: "14px",
+                      fontWeight: "bold",
+                    }}
+                    style={styles.button}
+                    onPress={closeFilterModal}
+                  >
+                    Done
+                  </Button>
+                </View>
+                <View style={styles.formContainer}>
+                  <FilterForm />
+                </View>
+              </View>
+            </Pressable>
+          </ScrollView>
+        </KeyboardAvoidingView>
       </Modal>
     </View>
   );
@@ -89,6 +108,7 @@ const styles = StyleSheet.create({
   formContainer: {
     marginTop: 32,
     width: "100%",
+    flex: 1,
   },
 });
 
