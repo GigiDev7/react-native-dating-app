@@ -5,7 +5,7 @@ import ProfileInfo from "./ProfileInfo";
 import DislikeIcon from "./DislikeIcon";
 import HeartIcon from "./HeartIcon";
 
-const ProfileModal = ({ visible, closeModal, name, age, location }) => {
+const ProfileModal = ({ visible, closeModal, name, age, location, bio }) => {
   return (
     <Modal visible={visible} animationType="fade" style={styles.modal}>
       <ScrollView style={{}}>
@@ -28,9 +28,7 @@ const ProfileModal = ({ visible, closeModal, name, age, location }) => {
           <Text style={{ fontSize: 18, fontWeight: "500", marginBottom: 6 }}>
             My bio
           </Text>
-          <Text>
-            dcasencasiecnasicenasocsaoicenasocenoascneoascneoascneoascineoasicneoiascneoaiscneoascnasocnasc
-          </Text>
+          <Text>{bio}</Text>
         </View>
         <View style={styles.btnContainer}>
           <DislikeIcon />

@@ -26,6 +26,7 @@ const ProfileCard = () => {
         location={50}
         closeModal={closeProfileModal}
         visible={isProfileModalShown}
+        bio="my bio !!!!!"
       />
       <ImageBackground
         style={styles.bgImage}
