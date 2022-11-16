@@ -2,6 +2,7 @@ import { useLayoutEffect, useState } from "react";
 import { Text, View, Modal, StyleSheet } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import Button from "../components/ui/Button";
+import FilterForm from "../components/FilterForm";
 
 const HomeScreen = ({ navigation }) => {
   const [isFilterModalShown, setIsFilterModalShown] = useState(false);
@@ -50,7 +51,9 @@ const HomeScreen = ({ navigation }) => {
               Done
             </Button>
           </View>
-          <View></View>
+          <View style={styles.formContainer}>
+            <FilterForm />
+          </View>
         </View>
       </Modal>
     </View>
@@ -82,6 +85,10 @@ const styles = StyleSheet.create({
   titleWrapper: {
     flexDirection: "row",
     alignItems: "center",
+  },
+  formContainer: {
+    marginTop: 32,
+    width: "100%",
   },
 });
 
