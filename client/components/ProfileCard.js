@@ -1,45 +1,53 @@
 import { View, ImageBackground, Text, StyleSheet } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { Colors } from "../utils/constants";
+import ProfileModal from "./ProfileModal";
+import { useState } from "react";
+import ProfileInfo from "./ProfileInfo";
+import HeartIcon from "./HeartIcon";
+import DislikeIcon from "./DislikeIcon";
 
 const ProfileCard = () => {
+  const [isProfileModalShown, setIsProfileModalShown] = useState(false);
+
+  const showProfileModal = () => {
+    setIsProfileModalShown(true);
+  };
+
+  const closeProfileModal = () => {
+    setIsProfileModalShown(false);
+  };
+
   return (
-    <ImageBackground
-      style={styles.bgImage}
-      source={require("../assets/profile.jpg")}
-    >
-      <View style={styles.infoContainer}>
-        <View>
-          <View style={styles.wrapper}>
-            <Text style={styles.name}>Giorgi,</Text>
-            <Text style={styles.age}>25</Text>
-          </View>
-          <View style={styles.wrapper}>
-            <Ionicons name="location" size={16} color={Colors.primary} />
-            <Text style={styles.location}>50km away</Text>
+    <>
+      <ProfileModal
+        name={"Giorgi"}
+        age={25}
+        location={50}
+        closeModal={closeProfileModal}
+        visible={isProfileModalShown}
+      />
+      <ImageBackground
+        style={styles.bgImage}
+        source={require("../assets/profile.jpg")}
+      >
+        <View style={styles.infoContainer}>
+          <ProfileInfo name="Giorgi" age={25} location={50} />
+          <View>
+            <Ionicons
+              onPress={showProfileModal}
+              name="md-arrow-redo-circle-sharp"
+              size={40}
+              color={Colors.primary}
+            />
           </View>
         </View>
-        <View>
-          <Ionicons
-            name="md-arrow-redo-circle-sharp"
-            size={40}
-            color={Colors.primary}
-          />
+        <View style={styles.btnContainer}>
+          <DislikeIcon />
+          <HeartIcon />
         </View>
-      </View>
-      <View style={styles.btnContainer}>
-        <Ionicons
-          name="close"
-          size={24}
-          style={[styles.icon, styles.iconClose]}
-        />
-        <Ionicons
-          name="heart"
-          size={24}
-          style={[styles.icon, styles.iconHeart]}
-        />
-      </View>
-    </ImageBackground>
+      </ImageBackground>
+    </>
   );
 };
 
@@ -58,44 +66,10 @@ const styles = StyleSheet.create({
     paddingBottom: 24,
     alignItems: "center",
   },
-  wrapper: {
-    flexDirection: "row",
-    marginVertical: 4,
-    alignItems: "center",
-  },
-  name: {
-    fontSize: 32,
-    fontWeight: "900",
-  },
-  age: {
-    fontSize: 30,
-    fontWeight: "700",
-    marginLeft: 8,
-  },
-  location: {
-    fontSize: 16,
-    fontWeight: "700",
-    marginLeft: 4,
-  },
   btnContainer: {
     flexDirection: "row",
     justifyContent: "space-evenly",
     marginBottom: 24,
-  },
-  icon: {
-    borderWidth: 2,
-    padding: 12,
-    borderRadius: 26,
-    overflow: "hidden",
-    backgroundColor: "black",
-  },
-  iconClose: {
-    borderColor: Colors.primary500,
-    color: Colors.primary500,
-  },
-  iconHeart: {
-    borderColor: "green",
-    color: "green",
   },
 });
 

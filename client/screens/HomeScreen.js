@@ -1,7 +1,7 @@
 import { useLayoutEffect, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import ModalContainer from "../components/ModalContainer";
+import FilterModal from "../components/FilterModal";
 import ProfileCard from "../components/ProfileCard";
 
 const HomeScreen = ({ navigation }) => {
@@ -30,10 +30,7 @@ const HomeScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <ModalContainer
-        visible={isFilterModalShown}
-        closeModal={closeFilterModal}
-      />
+      <FilterModal visible={isFilterModalShown} closeModal={closeFilterModal} />
       <ProfileCard />
     </View>
   );

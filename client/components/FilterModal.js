@@ -11,7 +11,7 @@ import {
 import Button from "./ui/Button";
 import FilterForm from "./FilterForm";
 
-const ModalContainer = ({ visible, closeModal }) => {
+const FilterModal = ({ visible, closeModal }) => {
   return (
     <Modal style={styles.modal} animationType="slide" visible={visible}>
       <KeyboardAvoidingView
@@ -80,4 +80,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ModalContainer;
+export default FilterModal;
