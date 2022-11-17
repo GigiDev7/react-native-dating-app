@@ -6,22 +6,6 @@ import { Colors } from "../utils/constants";
 const MessageBoxScreen = ({ navigation }) => {
   useLayoutEffect(() => {
     navigation.setOptions({
-      /* headerLeft: ({}) => (
-        <MaterialIcons
-          name="arrow-back-ios"
-          size={24}
-          color={Colors.gray500}
-          onPress={() => navigation.goBack()}
-        />
-      ),
-      headerTitle: () => (
-        <View>
-          <Image
-            style={styles.headerImage}
-            source={require("../assets/profile.jpg")}
-          />
-        </View>
-      ), */
       header: () => (
         <View style={styles.header}>
           <MaterialIcons
