@@ -1,18 +1,18 @@
 import { Modal, StyleSheet, Text, View, Image, ScrollView } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { Colors } from "../utils/constants";
-import ProfileInfo from "./ProfileInfo";
-import DislikeIcon from "./DislikeIcon";
-import HeartIcon from "./HeartIcon";
+import { Colors } from "../../utils/constants";
+import ProfileInfo from "../ProfileInfo";
+import DislikeIcon from "../DislikeIcon";
+import HeartIcon from "../HeartIcon";
 
 const ProfileModal = ({ visible, closeModal, name, age, location, bio }) => {
   return (
     <Modal visible={visible} animationType="fade" style={styles.modal}>
-      <ScrollView style={{}}>
+      <ScrollView style={{ flex: 1 }}>
         <View style={styles.container}>
           <Image
             style={styles.image}
-            source={require("../assets/profile.jpg")}
+            source={require("../../assets/profile.jpg")}
           />
           <Ionicons
             name="md-arrow-down-circle-sharp"

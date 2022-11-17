@@ -1,7 +1,7 @@
 import { View, ImageBackground, Text, StyleSheet } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { Colors } from "../utils/constants";
-import ProfileModal from "./ProfileModal";
+import ProfileModal from "./modals/ProfileModal";
 import { useState } from "react";
 import ProfileInfo from "./ProfileInfo";
 import HeartIcon from "./HeartIcon";

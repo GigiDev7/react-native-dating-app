@@ -1,7 +1,7 @@
 import { useLayoutEffect, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import FilterModal from "../components/FilterModal";
+import FilterModal from "../components/modals/FilterModal";
 import ProfileCard from "../components/ProfileCard";
 
 const HomeScreen = ({ navigation }) => {

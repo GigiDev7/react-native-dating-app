@@ -9,10 +9,23 @@ import {
 import { Colors } from "../utils/constants";
 import image from "../assets/profile.jpg";
 import Button from "../components/ui/Button";
+import PricingModal from "../components/modals/PricingModal";
+import { useState } from "react";
 
 const LikeScreen = () => {
+  const [isPricingModalShown, setIsPricingModalShown] = useState(false);
+
+  const showModal = () => {
+    setIsPricingModalShown(true);
+  };
+
+  const closeModal = () => {
+    setIsPricingModalShown(false);
+  };
+
   return (
     <View style={styles.container}>
+      {isPricingModalShown && <PricingModal closeModal={closeModal} />}
       <View style={styles.header}>
         <Text style={styles.headerText}>1 Like</Text>
       </View>
@@ -32,7 +45,9 @@ const LikeScreen = () => {
           </ImageBackground>
         )}
       />
-      <Button style={styles.button}>SEE WHO LIKES YOU</Button>
+      <Button onPress={showModal} style={styles.button}>
+        SEE WHO LIKES YOU
+      </Button>
     </View>
   );
 };

@@ -8,8 +8,8 @@ import {
   StyleSheet,
   Pressable,
 } from "react-native";
-import Button from "./ui/Button";
-import FilterForm from "./FilterForm";
+import Button from "../ui/Button";
+import FilterForm from "../FilterForm";
 
 const FilterModal = ({ visible, closeModal }) => {
   return (
