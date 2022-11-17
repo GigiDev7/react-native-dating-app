@@ -12,9 +12,13 @@ export default function App() {
     <>
       <StatusBar style="auto" />
       <NavigationContainer>
-        <Stack.Navigator screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="Main" component={MainStack} />
-          <Stack.Screen name="Messages" component={MessageBoxScreen} />
+        <Stack.Navigator>
+          <Stack.Screen
+            options={{ headerShown: false }}
+            name="Main"
+            component={MainStack}
+          />
+          <Stack.Screen name="MessageBox" component={MessageBoxScreen} />
         </Stack.Navigator>
       </NavigationContainer>
     </>
