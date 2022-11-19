@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   Modal,
   StyleSheet,
@@ -14,6 +15,18 @@ import ImagePickerCard from "../ImagePickerCard";
 import Button from "../ui/Button";
 
 const ProfileEditModal = ({ visible, closeModal }) => {
+  const [bio, setBio] = useState("");
+
+  const handleTextChange = (text) => {
+    if (bio.length === 100) {
+      if (text.length < bio.length) {
+        setBio(text);
+      }
+      return;
+    }
+    setBio(text);
+  };
+
   return (
     <Modal style={styles.modal} animationType="slide" visible={visible}>
       <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }}>
@@ -56,7 +69,22 @@ const ProfileEditModal = ({ visible, closeModal }) => {
               >
                 ABOUT ME
               </Text>
-              <TextInput style={styles.input} multiline={true} />
+              <TextInput
+                value={bio}
+                onChangeText={handleTextChange}
+                style={styles.input}
+                multiline={true}
+              />
+              <Text
+                style={{
+                  position: "absolute",
+                  right: 10,
+                  color: Colors.gray,
+                  bottom: 0,
+                }}
+              >
+                {100 - bio.length}
+              </Text>
             </View>
             <View style={{ flex: 1, backgroundColor: Colors.gray100 }} />
           </View>
@@ -104,6 +132,7 @@ const styles = StyleSheet.create({
     paddingVertical: 40,
     marginTop: 18,
     paddingLeft: 6,
+    position: "relative",
   },
 });
 
