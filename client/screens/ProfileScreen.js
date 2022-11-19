@@ -8,7 +8,7 @@ import ProfileEditModal from "../components/modals/ProfileEditModal";
 
 const ProfileScreen = () => {
   const [isPricingModalShown, setIsPricingModalShown] = useState(false);
-  const [isEditModalShown, setIsEditModalShown] = useState(true);
+  const [isEditModalShown, setIsEditModalShown] = useState(false);
 
   const openPricingModal = () => {
     setIsPricingModalShown(true);
