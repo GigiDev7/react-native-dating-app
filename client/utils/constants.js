@@ -4,5 +4,6 @@ export const Colors = {
   primary500: "#AB3333",
   gray: "#C3BDBD",
   gray500: "#8B8A8A",
+  gray100: "#DFDFDF",
   gold: "#EEB90C",
 };
