@@ -5,10 +5,14 @@ import { Fontisto, MaterialIcons } from "@expo/vector-icons";
 import PricingModal from "../components/modals/PricingModal";
 import { useState } from "react";
 import ProfileEditModal from "../components/modals/ProfileEditModal";
+import { logoutUser } from "../store/auth";
+import { useDispatch } from "react-redux";
 
 const ProfileScreen = () => {
   const [isPricingModalShown, setIsPricingModalShown] = useState(false);
   const [isEditModalShown, setIsEditModalShown] = useState(false);
+
+  const dispatch = useDispatch();
 
   const openPricingModal = () => {
     setIsPricingModalShown(true);
@@ -26,6 +30,10 @@ const ProfileScreen = () => {
     setIsEditModalShown(false);
   };
 
+  const logout = () => {
+    dispatch(logoutUser());
+  };
+
   return (
     <View style={styles.container}>
       {isPricingModalShown && <PricingModal closeModal={closePricingModal} />}
@@ -40,6 +48,13 @@ const ProfileScreen = () => {
           style={styles.icon}
           name="edit"
           size={24}
+        />
+        <MaterialIcons
+          name="logout"
+          size={32}
+          color="black"
+          style={styles.logoutIcon}
+          onPress={logout}
         />
         <Text style={styles.name}>Giorgi, 25</Text>
       </View>
@@ -117,6 +132,11 @@ const styles = StyleSheet.create({
     width: "70%",
     backgroundColor: "white",
     borderRadius: "50%",
+  },
+  logoutIcon: {
+    position: "absolute",
+    right: -80,
+    top: 40,
   },
 });
 

@@ -2,6 +2,8 @@ import { createSlice } from "@reduxjs/toolkit";
 import { BASE_URL } from "../utils/constants";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { isExpired } from "react-jwt";
+import { useDispatch } from "react-redux";
 
 const authSlice = createSlice({
   name: "auth",
@@ -44,5 +46,23 @@ export const registerUser = async (userData) => {
     console.log(error);
   }
 };
+
+export const logoutUser = () => async (dispatch) => {
+  await AsyncStorage.removeItem("user");
+  dispatch(authActions.logout());
+};
+
+axios.interceptors.request.use(async function (config) {
+  const user = await AsyncStorage.getItem("user");
+  const dispatch = useDispatch();
+
+  if (user) {
+    const isTokenExpired = isExpired(JSON.parse(user).token);
+    if (isTokenExpired) {
+      dispatch(logoutUser());
+      return;
+    }
+  }
+});
 
 export default authSlice;
