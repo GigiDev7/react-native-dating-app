@@ -4,6 +4,7 @@ import Input from "../components/ui/Input";
 import RadioInput from "../components/ui/RadioInput";
 import Button from "../components/ui/Button";
 import { Colors } from "../utils/constants";
+import { registerUser } from "../store/auth";
 
 const RegisterScreen = ({ navigation }) => {
   const [userData, setUserData] = useState({
@@ -27,8 +28,13 @@ const RegisterScreen = ({ navigation }) => {
     });
   };
 
-  const submitForm = () => {
-    console.log(userData.firstname);
+  const submitForm = async () => {
+    try {
+      await registerUser(userData);
+      navigation.navigate("Login");
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (

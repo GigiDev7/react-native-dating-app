@@ -8,4 +8,4 @@ export const Colors = {
   gold: "#EEB90C",
 };
 
-export const BASE_URL = "http://localhost:8000";
+export const BASE_URL = "http://192.168.100.2:8000";

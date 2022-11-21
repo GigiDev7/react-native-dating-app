@@ -26,8 +26,15 @@ export const loginUser = (email, password) => async (dispatch) => {
       email,
       password,
     });
-    console.log(data);
     dispatch(authActions.login(data));
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const registerUser = async (userData) => {
+  try {
+    await axios.post(`${BASE_URL}/user/register`, userData);
   } catch (error) {
     console.log(error);
   }
