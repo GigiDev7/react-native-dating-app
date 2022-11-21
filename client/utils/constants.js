@@ -7,3 +7,5 @@ export const Colors = {
   gray100: "#DFDFDF",
   gold: "#EEB90C",
 };
+
+export const BASE_URL = "http://localhost:8000";

@@ -3,10 +3,15 @@ import Input from "../components/ui/Input";
 import Button from "../components/ui/Button";
 import { Colors } from "../utils/constants";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { loginUser } from "../store/auth";
 
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isValid, setIsValid] = useState(true);
+
+  const dispatch = useDispatch();
 
   const handleChange = (text, type) => {
     if (type === "email") {
@@ -17,7 +22,12 @@ const LoginScreen = ({ navigation }) => {
   };
 
   const handleSubmit = () => {
-    console.log(email, password);
+    setIsValid(true);
+    if (!email || !password) {
+      setIsValid(false);
+      return;
+    }
+    dispatch(loginUser(email, password));
   };
 
   return (
@@ -35,6 +45,12 @@ const LoginScreen = ({ navigation }) => {
       <Button onPress={handleSubmit} style={styles.button}>
         Login
       </Button>
+
+      {!isValid && (
+        <Text style={{ marginTop: 4, color: "white" }}>
+          Please enter email and password
+        </Text>
+      )}
 
       <View
         style={{ flexDirection: "row", alignItems: "center", marginTop: 12 }}
