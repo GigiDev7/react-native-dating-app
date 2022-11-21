@@ -52,17 +52,4 @@ export const logoutUser = () => async (dispatch) => {
   dispatch(authActions.logout());
 };
 
-axios.interceptors.request.use(async function (config) {
-  const user = await AsyncStorage.getItem("user");
-  const dispatch = useDispatch();
-
-  if (user) {
-    const isTokenExpired = isExpired(JSON.parse(user).token);
-    if (isTokenExpired) {
-      dispatch(logoutUser());
-      return;
-    }
-  }
-});
-
 export default authSlice;
