@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { BASE_URL } from "../utils/constants";
 import axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const authSlice = createSlice({
   name: "auth",
@@ -11,6 +12,9 @@ const authSlice = createSlice({
     },
     logout(state) {
       state.user = null;
+    },
+    setUser(state, action) {
+      state.user = action.payload;
     },
     setAuthError(state, action) {
       state.error = action.payload;
@@ -26,6 +30,7 @@ export const loginUser = (email, password) => async (dispatch) => {
       email,
       password,
     });
+    await AsyncStorage.setItem("user", JSON.stringify(data));
     dispatch(authActions.login(data));
   } catch (error) {
     console.log(error);
