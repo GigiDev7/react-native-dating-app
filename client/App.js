@@ -8,20 +8,40 @@ import store from "./store";
 import { Provider, useSelector, useDispatch } from "react-redux";
 import { useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { authActions } from "./store/auth";
+import { authActions, logoutUser } from "./store/auth";
 
 const Stack = createNativeStackNavigator();
 
 const Root = () => {
   const user = useSelector((state) => state.auth.user);
+  const timer = useSelector((state) => state.auth.timer);
 
   const dispatch = useDispatch();
 
   useEffect(() => {
     (async function () {
       const user = await AsyncStorage.getItem("user");
+      if (user) {
+        const expiresAt = await AsyncStorage.getItem("expiresAt");
+        const remainingTime = +expiresAt - new Date().getTime();
+
+        if (remainingTime > 60 * 1000) {
+          const newTimer = setTimeout(() => {
+            dispatch(logoutUser());
+          }, remainingTime);
+
+          dispatch(authActions.setTimer(newTimer));
+        } else {
+          dispatch(logoutUser());
+        }
+      }
+
       dispatch(authActions.setUser(JSON.parse(user)));
     })();
+
+    return () => {
+      clearTimeout(timer);
+    };
   }, []);
 
   if (!user) {

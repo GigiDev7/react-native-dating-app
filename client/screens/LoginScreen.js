@@ -3,13 +3,15 @@ import Input from "../components/ui/Input";
 import Button from "../components/ui/Button";
 import { Colors } from "../utils/constants";
 import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { loginUser } from "../store/auth";
 
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isValid, setIsValid] = useState(true);
+
+  const error = useSelector((state) => state.auth.error);
 
   const dispatch = useDispatch();
 
@@ -46,6 +48,7 @@ const LoginScreen = ({ navigation }) => {
         Login
       </Button>
 
+      {error && <Text style={{ marginTop: 4, color: "white" }}>{error}</Text>}
       {!isValid && (
         <Text style={{ marginTop: 4, color: "white" }}>
           Please enter email and password
