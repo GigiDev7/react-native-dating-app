@@ -1,6 +1,5 @@
 import mongoose from "mongoose";
 import isEmail from "validator/lib/isEmail";
-import bcrypt from "bcrypt";
 
 const userSchema = new mongoose.Schema(
   {
@@ -34,6 +33,12 @@ const userSchema = new mongoose.Schema(
       required: [true, "Password is required"],
       minlength: [6, "Password must be at least 6 characters"],
     },
+    location: {
+      latitude: String,
+      longitude: String,
+      city: String,
+      country: String,
+    },
     likes: {
       type: [String],
     },
@@ -43,16 +48,11 @@ const userSchema = new mongoose.Schema(
     likedBy: {
       type: [String],
     },
-    matches: {
+    dislikedBy: {
       type: [String],
     },
-    location: {
-      lat: {
-        type: String,
-      },
-      lng: {
-        type: String,
-      },
+    matches: {
+      type: [String],
     },
   },
   {

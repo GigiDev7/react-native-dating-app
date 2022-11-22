@@ -27,3 +27,20 @@ export const likeUser = async (likedById: string, userId: string) => {
     throw new CustomError("Error", "User not found");
   }
 };
+
+export const dislikeUser = async (dislikedById: string, userId: string) => {
+  try {
+    const user = await User.findById(dislikedById);
+    const dislikedUser = await User.findById(userId);
+
+    if (user && dislikedUser) {
+      user.dislikes.push(userId);
+      dislikedUser.dislikedBy.push(dislikedById);
+
+      await user.save();
+      await dislikedUser.save();
+    }
+  } catch (error) {
+    throw new CustomError("Error", "User not found");
+  }
+};
