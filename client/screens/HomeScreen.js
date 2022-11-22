@@ -4,6 +4,8 @@ import { Ionicons } from "@expo/vector-icons";
 import FilterModal from "../components/modals/FilterModal";
 import ProfileCard from "../components/ProfileCard";
 import * as Location from "expo-location";
+import { LOCATION_URL } from "../utils/constants";
+import axios from "axios";
 
 const HomeScreen = ({ navigation }) => {
   const [isFilterModalShown, setIsFilterModalShown] = useState(false);
@@ -19,7 +21,10 @@ const HomeScreen = ({ navigation }) => {
         return;
       }
       let location = await Location.getCurrentPositionAsync();
-      console.log(location);
+      const { data } = await axios.get(
+        `${LOCATION_URL}query=${location.coords.latitude},${location.coords.longitude}`
+      );
+      console.log(data.data[0].county, data.data[0].country);
     })();
   }, []);
 
