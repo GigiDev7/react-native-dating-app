@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.loginUser = exports.registerUser = void 0;
+exports.updateLocation = exports.loginUser = exports.registerUser = void 0;
 const userSchema_1 = __importDefault(require("../models/userSchema"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const bcrypt_1 = __importDefault(require("bcrypt"));
@@ -48,3 +48,12 @@ const loginUser = (email, password) => __awaiter(void 0, void 0, void 0, functio
     return { user, token };
 });
 exports.loginUser = loginUser;
+const updateLocation = (userId, locationData) => __awaiter(void 0, void 0, void 0, function* () {
+    const user = yield userSchema_1.default.findById(userId, "-password,-__v");
+    if (user) {
+        user.location = locationData;
+        yield user.save();
+        return user;
+    }
+});
+exports.updateLocation = updateLocation;

@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.likeUser = void 0;
+exports.dislikeUser = exports.likeUser = void 0;
 const userSchema_1 = __importDefault(require("../models/userSchema"));
 const customError_1 = require("../utils/customError");
 const likeUser = (likedById, userId) => __awaiter(void 0, void 0, void 0, function* () {
@@ -41,3 +41,19 @@ const likeUser = (likedById, userId) => __awaiter(void 0, void 0, void 0, functi
     }
 });
 exports.likeUser = likeUser;
+const dislikeUser = (dislikedById, userId) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const user = yield userSchema_1.default.findById(dislikedById);
+        const dislikedUser = yield userSchema_1.default.findById(userId);
+        if (user && dislikedUser) {
+            user.dislikes.push(userId);
+            dislikedUser.dislikedBy.push(dislikedById);
+            yield user.save();
+            yield dislikedUser.save();
+        }
+    }
+    catch (error) {
+        throw new customError_1.CustomError("Error", "User not found");
+    }
+});
+exports.dislikeUser = dislikeUser;

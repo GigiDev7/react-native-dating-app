@@ -1,5 +1,5 @@
 import express from "express";
-import { register, login } from "../controllers/user";
+import { register, login, patchLocation } from "../controllers/user";
 import { validationHandler } from "../middlewares/validationHandler";
 import {
   registerValidation,
@@ -13,6 +13,7 @@ const router = express.Router();
 router.route("/register").post(registerValidation, validationHandler, register);
 router.route("/login").post(loginValidation, validationHandler, login);
 router.route("/like/:userId").patch(protectAuth, like);
-router.route("dislike/:userId").patch(protectAuth, dislike);
+router.route("/dislike/:userId").patch(protectAuth, dislike);
+router.route("/location/:userId").patch(protectAuth, patchLocation);
 
 export default router;

@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { loginUser, registerUser } from "../services/user";
+import { loginUser, registerUser, updateLocation } from "../services/user";
 
 export const register = async (
   req: Request,
@@ -25,6 +25,20 @@ export const login = async (
     const { password, __v, ...userData } = (user as any)._doc;
     userData.token = token;
     res.status(200).json(userData);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const patchLocation = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const userId = req.params.userId;
+    const user = await updateLocation(userId, req.body);
+    res.status(201).json(user);
   } catch (error) {
     next(error);
   }

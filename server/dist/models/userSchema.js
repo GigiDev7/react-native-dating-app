@@ -36,22 +36,26 @@ const userSchema = new mongoose_1.default.Schema({
         required: [true, "Password is required"],
         minlength: [6, "Password must be at least 6 characters"],
     },
+    location: {
+        latitude: String,
+        longitude: String,
+        city: String,
+        country: String,
+    },
     likes: {
+        type: [String],
+    },
+    dislikes: {
         type: [String],
     },
     likedBy: {
         type: [String],
     },
-    matches: {
+    dislikedBy: {
         type: [String],
     },
-    location: {
-        lat: {
-            type: String,
-        },
-        lng: {
-            type: String,
-        },
+    matches: {
+        type: [String],
     },
 }, {
     timestamps: true,

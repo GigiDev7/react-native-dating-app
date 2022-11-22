@@ -44,3 +44,20 @@ export const loginUser = async (email: string, password: string) => {
 
   return { user, token };
 };
+
+export const updateLocation = async (
+  userId: string,
+  locationData: {
+    latitude: string;
+    longitude: string;
+    city: string;
+    country: string;
+  }
+) => {
+  const user = await User.findById(userId, "-password,-__v");
+  if (user) {
+    user.location = locationData;
+    await user.save();
+    return user;
+  }
+};

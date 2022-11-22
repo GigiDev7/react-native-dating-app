@@ -13,4 +13,6 @@ const router = express_1.default.Router();
 router.route("/register").post(authValidator_1.registerValidation, validationHandler_1.validationHandler, user_1.register);
 router.route("/login").post(authValidator_1.loginValidation, validationHandler_1.validationHandler, user_1.login);
 router.route("/like/:userId").patch(protectAuth_1.protectAuth, like_1.like);
+router.route("/dislike/:userId").patch(protectAuth_1.protectAuth, like_1.dislike);
+router.route("/location/:userId").patch(protectAuth_1.protectAuth, user_1.patchLocation);
 exports.default = router;

@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.like = void 0;
+exports.dislike = exports.like = void 0;
 const match_1 = require("../services/match");
 const like = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -23,3 +23,15 @@ const like = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () 
     }
 });
 exports.like = like;
+const dislike = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const dislikedById = req.user._id;
+        const userId = req.params.userId;
+        yield (0, match_1.dislikeUser)(dislikedById.toString(), userId);
+        res.status(204);
+    }
+    catch (error) {
+        next(error);
+    }
+});
+exports.dislike = dislike;
