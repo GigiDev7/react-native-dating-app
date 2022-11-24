@@ -21,6 +21,7 @@ const likeUser = (likedById, userId) => __awaiter(void 0, void 0, void 0, functi
         const user = yield userSchema_1.default.findById(likedById, "-password");
         const likedUser = yield userSchema_1.default.findById(userId, "-password");
         if (user &&
+            user.accountType === "regular" &&
             user.limitExpiration !== 0 &&
             new Date().getTime() < user.limitExpiration) {
             throw new customError_1.CustomError("Like Expiration Error", "You dont have any likes left today");
@@ -29,13 +30,15 @@ const likeUser = (likedById, userId) => __awaiter(void 0, void 0, void 0, functi
             if (user && likedUser) {
                 user.likes.push(userId);
                 likedUser.likedBy.push(likedById);
-                if (user.likesLimit === 9) {
-                    user.likesLimit = 0;
-                    user.limitExpiration = new Date().getTime() + 24 * 60 * 60 * 1000;
-                }
-                else {
-                    user.likesLimit += 1;
-                    user.limitExpiration = 0;
+                if (user.accountType === "regular") {
+                    if (user.likesLimit === 9) {
+                        user.likesLimit = 0;
+                        user.limitExpiration = new Date().getTime() + 24 * 60 * 60 * 1000;
+                    }
+                    else {
+                        user.likesLimit += 1;
+                        user.limitExpiration = 0;
+                    }
                 }
                 if (user.likedBy.includes(userId)) {
                     user.matches.push(userId);
