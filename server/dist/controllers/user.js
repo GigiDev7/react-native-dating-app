@@ -61,8 +61,12 @@ const getUsers = (req, res, next) => __awaiter(void 0, void 0, void 0, function*
         const userGender = req.user.gender;
         const userId = req.user._id;
         const coords = req.user.location.coordinates;
+        const likes = req.user.likes;
+        const dislikes = req.user.dislikes;
+        const matches = req.user.matches;
+        console.log([...likes, ...dislikes, ...matches]);
         const filterObject = {
-            _id: { $ne: userId },
+            _id: { $nin: [userId, ...likes, ...dislikes, ...matches] },
         };
         const { minAge, maxAge, maxDistance, gender } = req.query;
         if (gender) {

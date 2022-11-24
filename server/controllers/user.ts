@@ -58,12 +58,18 @@ export const getUsers = async (
     const userGender = (req as any).user.gender;
     const userId = (req as any).user._id;
     const coords = (req as any).user.location.coordinates;
+    const likes = (req as any).user.likes;
+    const dislikes = (req as any).user.dislikes;
+    const matches = (req as any).user.matches;
+
+    console.log([...likes, ...dislikes, ...matches]);
+
     const filterObject: {
       age?: any;
       gender?: string;
       _id: any;
     } = {
-      _id: { $ne: userId },
+      _id: { $nin: [userId, ...likes, ...dislikes, ...matches] },
     };
     const { minAge, maxAge, maxDistance, gender } = req.query;
     if (gender) {

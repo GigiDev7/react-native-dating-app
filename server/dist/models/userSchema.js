@@ -56,6 +56,14 @@ const userSchema = new mongoose_1.default.Schema({
     matches: {
         type: [String],
     },
+    likesLimit: {
+        type: Number,
+        default: 0,
+    },
+    limitExpiration: {
+        type: Number,
+        default: 0,
+    },
 }, {
     timestamps: true,
 });
