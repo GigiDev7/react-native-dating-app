@@ -14,6 +14,8 @@ export const errorsHandler = (
     res.status(401).json({ message: err.message || "Something went wrong" });
   } else if (err.name === "Authorization Error") {
     res.status(401).json({ message: err.message || "Something went wrong" });
+  } else if (err.name === "Like Expiration Error") {
+    res.status(400).json({ message: err.message || "Something went wrong" });
   } else {
     res.status(500).json(err);
   }

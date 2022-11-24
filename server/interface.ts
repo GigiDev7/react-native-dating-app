@@ -17,4 +17,6 @@ export interface IUser {
   city?: String;
   country?: String;
   location?: { coordinates: [number, number] };
+  likesLimit: number;
+  limitExpiration: number;
 }

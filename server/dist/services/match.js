@@ -20,20 +20,35 @@ const likeUser = (likedById, userId) => __awaiter(void 0, void 0, void 0, functi
         let isMatch = false;
         const user = yield userSchema_1.default.findById(likedById, "-password");
         const likedUser = yield userSchema_1.default.findById(userId, "-password");
-        if (user && likedUser) {
-            user.likes.push(userId);
-            likedUser.likedBy.push(likedById);
-            if (user.likedBy.includes(userId)) {
-                user.matches.push(userId);
-                likedUser.matches.push(likedById);
-                isMatch = true;
-            }
-            yield user.save();
-            yield likedUser.save();
-            return { user, likedUser, isMatch };
+        if (user &&
+            user.limitExpiration !== 0 &&
+            new Date().getTime() < user.limitExpiration) {
+            throw new customError_1.CustomError("Like Expiration Error", "You dont have any likes left today");
         }
         else {
-            throw new customError_1.CustomError("Data error", "Could not find user");
+            if (user && likedUser) {
+                user.likes.push(userId);
+                likedUser.likedBy.push(likedById);
+                if (user.likesLimit === 9) {
+                    user.likesLimit = 0;
+                    user.limitExpiration = new Date().getTime() + 24 * 60 * 60 * 1000;
+                }
+                else {
+                    user.likesLimit += 1;
+                    user.limitExpiration = 0;
+                }
+                if (user.likedBy.includes(userId)) {
+                    user.matches.push(userId);
+                    likedUser.matches.push(likedById);
+                    isMatch = true;
+                }
+                yield user.save();
+                yield likedUser.save();
+                return { user, likedUser, isMatch };
+            }
+            else {
+                throw new customError_1.CustomError("Data error", "Could not find user");
+            }
         }
     }
     catch (error) {
