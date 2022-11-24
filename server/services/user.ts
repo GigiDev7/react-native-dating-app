@@ -80,12 +80,13 @@ export const findUsers = async (
     gender?: string;
     _id: any;
   },
-  maxDistance: number
+  maxDistance: number,
+  coords: [number, number]
 ) => {
   const users = await User.aggregate([
     {
       $geoNear: {
-        near: { type: "Point", coordinates: [44, 42.9999] },
+        near: { type: "Point", coordinates: coords },
         distanceField: "dist.calculated",
         maxDistance: 1000 * maxDistance,
         spherical: true,

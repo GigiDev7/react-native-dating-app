@@ -57,6 +57,7 @@ export const getUsers = async (
   try {
     const userGender = (req as any).user.gender;
     const userId = (req as any).user._id;
+    const coords = (req as any).user.location.coordinates;
     const filterObject: {
       age?: any;
       gender?: string;
@@ -78,7 +79,7 @@ export const getUsers = async (
     let distance = 50;
     if (maxDistance) distance = +maxDistance;
 
-    const users = await findUsers(filterObject, distance);
+    const users = await findUsers(filterObject, distance, coords);
     res.status(200).json(users);
   } catch (error) {
     next(error);

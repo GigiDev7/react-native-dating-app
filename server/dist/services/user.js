@@ -66,11 +66,11 @@ const updateLocation = (userId, locationData) => __awaiter(void 0, void 0, void 
     }
 });
 exports.updateLocation = updateLocation;
-const findUsers = (filterObj, maxDistance) => __awaiter(void 0, void 0, void 0, function* () {
+const findUsers = (filterObj, maxDistance, coords) => __awaiter(void 0, void 0, void 0, function* () {
     const users = yield userSchema_1.default.aggregate([
         {
             $geoNear: {
-                near: { type: "Point", coordinates: [44, 42.9999] },
+                near: { type: "Point", coordinates: coords },
                 distanceField: "dist.calculated",
                 maxDistance: 1000 * maxDistance,
                 spherical: true,
