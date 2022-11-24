@@ -74,18 +74,22 @@ export const updateLocation = async (
   }
 };
 
-export const findUsers = async (gender: string) => {
-  let targetGender;
-  gender === "male" ? (targetGender = "female") : "male";
-
+export const findUsers = async (
+  filterObj: {
+    age?: any;
+    gender?: string;
+    _id: any;
+  },
+  maxDistance: number
+) => {
   const users = await User.aggregate([
     {
       $geoNear: {
         near: { type: "Point", coordinates: [44, 42.9999] },
         distanceField: "dist.calculated",
-        maxDistance: 1000 * 60,
+        maxDistance: 1000 * maxDistance,
         spherical: true,
-        query: { gender: targetGender },
+        query: filterObj,
       },
     },
   ]);

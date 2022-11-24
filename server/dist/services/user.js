@@ -66,17 +66,15 @@ const updateLocation = (userId, locationData) => __awaiter(void 0, void 0, void 
     }
 });
 exports.updateLocation = updateLocation;
-const findUsers = (gender) => __awaiter(void 0, void 0, void 0, function* () {
-    let targetGender;
-    gender === "male" ? (targetGender = "female") : "male";
+const findUsers = (filterObj, maxDistance) => __awaiter(void 0, void 0, void 0, function* () {
     const users = yield userSchema_1.default.aggregate([
         {
             $geoNear: {
                 near: { type: "Point", coordinates: [44, 42.9999] },
                 distanceField: "dist.calculated",
-                maxDistance: 1000 * 60,
+                maxDistance: 1000 * maxDistance,
                 spherical: true,
-                query: { gender: targetGender },
+                query: filterObj,
             },
         },
     ]);

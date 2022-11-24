@@ -55,8 +55,30 @@ export const getUsers = async (
   next: NextFunction
 ) => {
   try {
-    const gender = (req as any).user.gender;
-    const users = await findUsers(gender);
+    const userGender = (req as any).user.gender;
+    const userId = (req as any).user._id;
+    const filterObject: {
+      age?: any;
+      gender?: string;
+      _id: any;
+    } = {
+      _id: { $ne: userId },
+    };
+    const { minAge, maxAge, maxDistance, gender } = req.query;
+    if (gender) {
+      const genders = gender.toString().split(",");
+      if (genders.length === 1) filterObject.gender = genders[0];
+    } else {
+      filterObject.gender = userGender === "male" ? "female" : "male";
+    }
+
+    if (minAge) filterObject.age = { $gte: +minAge };
+    if (maxAge) filterObject.age = { ...filterObject?.age, $lte: +maxAge };
+
+    let distance = 50;
+    if (maxDistance) distance = +maxDistance;
+
+    const users = await findUsers(filterObject, distance);
     res.status(200).json(users);
   } catch (error) {
     next(error);

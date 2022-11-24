@@ -58,8 +58,28 @@ const patchLocation = (req, res, next) => __awaiter(void 0, void 0, void 0, func
 exports.patchLocation = patchLocation;
 const getUsers = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const gender = req.user.gender;
-        const users = yield (0, user_1.findUsers)(gender);
+        const userGender = req.user.gender;
+        const userId = req.user._id;
+        const filterObject = {
+            _id: { $ne: userId },
+        };
+        const { minAge, maxAge, maxDistance, gender } = req.query;
+        if (gender) {
+            const genders = gender.toString().split(",");
+            if (genders.length === 1)
+                filterObject.gender = genders[0];
+        }
+        else {
+            filterObject.gender = userGender === "male" ? "female" : "male";
+        }
+        if (minAge)
+            filterObject.age = { $gte: +minAge };
+        if (maxAge)
+            filterObject.age = Object.assign(Object.assign({}, filterObject === null || filterObject === void 0 ? void 0 : filterObject.age), { $lte: +maxAge });
+        let distance = 50;
+        if (maxDistance)
+            distance = +maxDistance;
+        const users = yield (0, user_1.findUsers)(filterObject, distance);
         res.status(200).json(users);
     }
     catch (error) {
