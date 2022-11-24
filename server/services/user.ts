@@ -92,6 +92,9 @@ export const findUsers = async (
         query: filterObj,
       },
     },
+    {
+      $unset: ["password", "__v", "createdAt", "updatedAt", "dist"],
+    },
   ]);
   return users;
 };

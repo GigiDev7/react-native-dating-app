@@ -77,6 +77,9 @@ const findUsers = (filterObj, maxDistance) => __awaiter(void 0, void 0, void 0, 
                 query: filterObj,
             },
         },
+        {
+            $unset: ["password", "__v", "createdAt", "updatedAt", "dist"],
+        },
     ]);
     return users;
 });
