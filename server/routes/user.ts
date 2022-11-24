@@ -1,5 +1,5 @@
 import express from "express";
-import { register, login, patchLocation } from "../controllers/user";
+import { register, login, patchLocation, getUsers } from "../controllers/user";
 import { validationHandler } from "../middlewares/validationHandler";
 import {
   registerValidation,
@@ -15,5 +15,6 @@ router.route("/login").post(loginValidation, validationHandler, login);
 router.route("/like/:userId").patch(protectAuth, like);
 router.route("/dislike/:userId").patch(protectAuth, dislike);
 router.route("/location/:userId").patch(protectAuth, patchLocation);
+router.route("/").get(protectAuth, getUsers);
 
 export default router;

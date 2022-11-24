@@ -37,11 +37,10 @@ const userSchema = new mongoose_1.default.Schema({
         minlength: [6, "Password must be at least 6 characters"],
     },
     location: {
-        latitude: String,
-        longitude: String,
-        city: String,
-        country: String,
+        coordinates: [Number],
     },
+    city: String,
+    country: String,
     likes: {
         type: [String],
     },
@@ -60,5 +59,6 @@ const userSchema = new mongoose_1.default.Schema({
 }, {
     timestamps: true,
 });
+userSchema.index({ location: "2dsphere" });
 const User = mongoose_1.default.model("User", userSchema);
 exports.default = User;

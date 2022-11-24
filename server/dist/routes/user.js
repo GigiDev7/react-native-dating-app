@@ -15,4 +15,5 @@ router.route("/login").post(authValidator_1.loginValidation, validationHandler_1
 router.route("/like/:userId").patch(protectAuth_1.protectAuth, like_1.like);
 router.route("/dislike/:userId").patch(protectAuth_1.protectAuth, like_1.dislike);
 router.route("/location/:userId").patch(protectAuth_1.protectAuth, user_1.patchLocation);
+router.route("/").get(protectAuth_1.protectAuth, user_1.getUsers);
 exports.default = router;

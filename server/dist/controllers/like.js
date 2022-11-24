@@ -28,7 +28,7 @@ const dislike = (req, res, next) => __awaiter(void 0, void 0, void 0, function* 
         const dislikedById = req.user._id;
         const userId = req.params.userId;
         yield (0, match_1.dislikeUser)(dislikedById.toString(), userId);
-        res.status(204);
+        res.status(204).send();
     }
     catch (error) {
         next(error);

@@ -20,7 +20,7 @@ var __rest = (this && this.__rest) || function (s, e) {
     return t;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.patchLocation = exports.login = exports.register = void 0;
+exports.getUsers = exports.patchLocation = exports.login = exports.register = void 0;
 const user_1 = require("../services/user");
 const register = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -56,3 +56,14 @@ const patchLocation = (req, res, next) => __awaiter(void 0, void 0, void 0, func
     }
 });
 exports.patchLocation = patchLocation;
+const getUsers = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const gender = req.user.gender;
+        const users = yield (0, user_1.findUsers)(gender);
+        res.status(200).json(users);
+    }
+    catch (error) {
+        next(error);
+    }
+});
+exports.getUsers = getUsers;

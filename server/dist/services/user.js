@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateLocation = exports.loginUser = exports.registerUser = void 0;
+exports.findUsers = exports.updateLocation = exports.loginUser = exports.registerUser = void 0;
 const userSchema_1 = __importDefault(require("../models/userSchema"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const bcrypt_1 = __importDefault(require("bcrypt"));
@@ -51,9 +51,35 @@ exports.loginUser = loginUser;
 const updateLocation = (userId, locationData) => __awaiter(void 0, void 0, void 0, function* () {
     const user = yield userSchema_1.default.findById(userId, "-password,-__v");
     if (user) {
-        user.location = locationData;
+        user.location.type = "Point";
+        user.city = locationData.city;
+        user.country = locationData.country;
+        if (user.location.coordinates.length === 0) {
+            user.location.coordinates.push(locationData.longitude, locationData.latitude);
+        }
+        else {
+            user.location.coordinates[0] = locationData.longitude;
+            user.location.coordinates[1] = locationData.latitude;
+        }
         yield user.save();
         return user;
     }
 });
 exports.updateLocation = updateLocation;
+const findUsers = (gender) => __awaiter(void 0, void 0, void 0, function* () {
+    let targetGender;
+    gender === "male" ? (targetGender = "female") : "male";
+    const users = yield userSchema_1.default.aggregate([
+        {
+            $geoNear: {
+                near: { type: "Point", coordinates: [44, 42.9999] },
+                distanceField: "dist.calculated",
+                maxDistance: 1000 * 60,
+                spherical: true,
+                query: { gender: targetGender },
+            },
+        },
+    ]);
+    return users;
+});
+exports.findUsers = findUsers;

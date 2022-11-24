@@ -48,16 +48,46 @@ export const loginUser = async (email: string, password: string) => {
 export const updateLocation = async (
   userId: string,
   locationData: {
-    latitude: string;
-    longitude: string;
+    latitude: number;
+    longitude: number;
     city: string;
     country: string;
   }
 ) => {
   const user = await User.findById(userId, "-password,-__v");
   if (user) {
-    user.location = locationData;
+    (user.location as any).type = "Point";
+    user.city = locationData.city;
+    user.country = locationData.country;
+    if (user.location!.coordinates.length === 0) {
+      user.location!.coordinates.push(
+        locationData.longitude,
+        locationData.latitude
+      );
+    } else {
+      user.location!.coordinates[0] = locationData.longitude;
+      user.location!.coordinates[1] = locationData.latitude;
+    }
+
     await user.save();
     return user;
   }
+};
+
+export const findUsers = async (gender: string) => {
+  let targetGender;
+  gender === "male" ? (targetGender = "female") : "male";
+
+  const users = await User.aggregate([
+    {
+      $geoNear: {
+        near: { type: "Point", coordinates: [44, 42.9999] },
+        distanceField: "dist.calculated",
+        maxDistance: 1000 * 60,
+        spherical: true,
+        query: { gender: targetGender },
+      },
+    },
+  ]);
+  return users;
 };

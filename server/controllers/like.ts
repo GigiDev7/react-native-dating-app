@@ -24,7 +24,7 @@ export const dislike = async (
     const dislikedById = (req as any).user._id;
     const userId = req.params.userId;
     await dislikeUser(dislikedById.toString(), userId);
-    res.status(204);
+    res.status(204).send();
   } catch (error) {
     next(error);
   }
