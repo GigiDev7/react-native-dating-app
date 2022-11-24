@@ -39,19 +39,19 @@ const userSchema = new mongoose.Schema(
     city: String,
     country: String,
     likes: {
-      type: [String],
+      type: [mongoose.Schema.Types.ObjectId],
     },
     dislikes: {
-      type: [String],
+      type: [mongoose.Schema.Types.ObjectId],
     },
     likedBy: {
-      type: [String],
+      type: [mongoose.Schema.Types.ObjectId],
     },
     dislikedBy: {
-      type: [String],
+      type: [mongoose.Schema.Types.ObjectId],
     },
     matches: {
-      type: [String],
+      type: [mongoose.Schema.Types.ObjectId],
     },
     likesLimit: {
       type: Number,

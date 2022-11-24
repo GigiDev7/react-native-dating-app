@@ -62,8 +62,6 @@ export const getUsers = async (
     const dislikes = (req as any).user.dislikes;
     const matches = (req as any).user.matches;
 
-    console.log([...likes, ...dislikes, ...matches]);
-
     const filterObject: {
       age?: any;
       gender?: string;

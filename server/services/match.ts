@@ -1,7 +1,12 @@
+import { ObjectId } from "mongoose";
 import User from "../models/userSchema";
 import { CustomError } from "../utils/customError";
+import { Types } from "mongoose";
 
-export const likeUser = async (likedById: string, userId: string) => {
+export const likeUser = async (
+  likedById: Types.ObjectId,
+  userId: Types.ObjectId
+) => {
   try {
     let isMatch = false;
     const user = await User.findById(likedById, "-password");
@@ -28,7 +33,10 @@ export const likeUser = async (likedById: string, userId: string) => {
   }
 };
 
-export const dislikeUser = async (dislikedById: string, userId: string) => {
+export const dislikeUser = async (
+  dislikedById: Types.ObjectId,
+  userId: Types.ObjectId
+) => {
   try {
     const user = await User.findById(dislikedById);
     const dislikedUser = await User.findById(userId);

@@ -42,19 +42,19 @@ const userSchema = new mongoose_1.default.Schema({
     city: String,
     country: String,
     likes: {
-        type: [String],
+        type: [mongoose_1.default.Schema.Types.ObjectId],
     },
     dislikes: {
-        type: [String],
+        type: [mongoose_1.default.Schema.Types.ObjectId],
     },
     likedBy: {
-        type: [String],
+        type: [mongoose_1.default.Schema.Types.ObjectId],
     },
     dislikedBy: {
-        type: [String],
+        type: [mongoose_1.default.Schema.Types.ObjectId],
     },
     matches: {
-        type: [String],
+        type: [mongoose_1.default.Schema.Types.ObjectId],
     },
     likesLimit: {
         type: Number,

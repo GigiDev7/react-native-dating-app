@@ -9,7 +9,12 @@ export interface IUser {
   gender: string;
   email: string;
   password: string;
-  likes?: string[];
-  likedBy?: string[];
-  matches?: string[];
+  likes?: Types.ObjectId[];
+  likedBy?: Types.ObjectId[];
+  matches?: Types.ObjectId[];
+  dislikes?: Types.ObjectId[];
+  dislikedBy?: Types.ObjectId[];
+  city?: String;
+  country?: String;
+  location?: { coordinates: [number, number] };
 }
