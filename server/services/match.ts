@@ -1,4 +1,3 @@
-import { ObjectId } from "mongoose";
 import User from "../models/userSchema";
 import { CustomError } from "../utils/customError";
 import { Types } from "mongoose";
@@ -50,7 +49,7 @@ export const likeUser = async (
       }
     }
   } catch (error) {
-    throw new CustomError("Error", "User not found");
+    throw error;
   }
 };
 

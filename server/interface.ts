@@ -19,4 +19,5 @@ export interface IUser {
   location?: { coordinates: [number, number] };
   likesLimit: number;
   limitExpiration: number;
+  accountType?: string;
 }
