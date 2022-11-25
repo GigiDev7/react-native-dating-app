@@ -55,7 +55,7 @@ describe("user services", () => {
     expect(res).toEqual({ user: mockUser, token: "token" });
   });
 
-  test("login user:FAILURE", async () => {
+  test("login user:FAILURE PASSWORD MISMATCH", async () => {
     (User.findOne as jest.Mock).mockResolvedValue(mockUser);
     (bcrypt.compare as jest.Mock).mockResolvedValue(false);
 
@@ -65,6 +65,19 @@ describe("user services", () => {
       expect(error).toMatchObject({
         name: "Authentication Error",
         message: "Incorrect email or password",
+      });
+    }
+  });
+
+  test("login user:FAILURE USER DOES NOT EXIST", async () => {
+    (User.findOne as jest.Mock).mockResolvedValue(null);
+
+    try {
+      await loginUser("email", "password");
+    } catch (error) {
+      expect(error).toMatchObject({
+        name: "Authentication Error",
+        message: "User does not exist",
       });
     }
   });
