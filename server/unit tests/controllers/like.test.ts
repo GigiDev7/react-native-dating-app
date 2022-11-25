@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 import { dislike, like } from "../../controllers/like";
 import { IUser } from "../../interface";
 import { dislikeUser, likeUser } from "../../services/match";
+import { CustomError } from "../../utils/customError";
 
 jest.mock("../../services/match");
 
@@ -25,17 +26,21 @@ const mockUser: IUser | any = {
   matches: [],
 };
 
-let req = {
+const req = {
   params: { userId: "111111111111" },
   user: mockUser,
 };
-let res = {
+const res = {
   status: jest.fn().mockReturnThis(),
   json: jest.fn((val) => val),
 };
-let next = jest.fn((val) => {});
+const next = jest.fn((val) => {});
 
 describe("like controller", () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
   test("like user:SUCCESS", async () => {
     (likeUser as jest.Mock).mockResolvedValue({
       user: mockUser,
@@ -50,15 +55,14 @@ describe("like controller", () => {
   });
 
   test("like user:FAILURE", async () => {
-    (likeUser as jest.Mock).mockRejectedValue({
-      name: "Error",
-      message: "Error",
-    });
+    (likeUser as jest.Mock).mockRejectedValue(
+      new CustomError("error", "error")
+    );
 
-    try {
-      await like(req as any, res as any, next as any);
-    } catch (error) {
-      expect(next).toHaveBeenCalledWith({ name: "Error", message: "Error" });
-    }
+    await like(req as any, res as any, next as any);
+
+    expect(next).toHaveBeenCalledWith({ message: "error", name: "error" });
   });
+
+  /*  test("dislike user:SUCCESS", async () => {}); */
 });
