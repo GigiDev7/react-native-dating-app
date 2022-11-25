@@ -29,6 +29,10 @@ const mockUser: IUser | any = {
 };
 
 describe("user services", () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
   test("register user", async () => {
     (bcrypt.genSalt as jest.Mock).mockResolvedValue("salt");
     (bcrypt.hash as jest.Mock).mockResolvedValue("hashedPassword");

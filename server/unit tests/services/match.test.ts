@@ -64,6 +64,10 @@ const mockUser3: IUser | any = {
 };
 
 describe("match services", () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
   test("like user:SUCCESS", async () => {
     User.findById = jest.fn((val) => {
       if (val == mockUser._id) return mockUser;

@@ -64,5 +64,11 @@ describe("like controller", () => {
     expect(next).toHaveBeenCalledWith({ message: "error", name: "error" });
   });
 
-  /*  test("dislike user:SUCCESS", async () => {}); */
+  test("dislike user:SUCCESS", async () => {
+    (dislikeUser as jest.Mock).mockResolvedValue({});
+
+    await dislike(req as any, res as any, next as any);
+
+    expect(res.status).toHaveBeenCalledWith(204);
+  });
 });
