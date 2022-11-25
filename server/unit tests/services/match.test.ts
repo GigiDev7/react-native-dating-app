@@ -92,4 +92,16 @@ describe("match services", () => {
       });
     }
   });
+
+  test("dislike user", async () => {
+    User.findById = jest.fn((val) => {
+      if (val == mockUser._id) return mockUser;
+      return mockUser2;
+    });
+
+    await dislikeUser(mockUser._id, mockUser2._id);
+
+    expect(mockUser.dislikes).toHaveLength(1);
+    expect(mockUser2.dislikedBy).toHaveLength(1);
+  });
 });
