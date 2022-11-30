@@ -8,14 +8,15 @@ import {
   Keyboard,
   Pressable,
   KeyboardAvoidingView,
-  ScrollView,
 } from "react-native";
 import { Colors } from "../../utils/constants";
 import ImagePickerCard from "../ImagePickerCard";
 import Button from "../ui/Button";
+import profileImage from "../../assets/profile.jpg";
 
 const ProfileEditModal = ({ visible, closeModal }) => {
   const [bio, setBio] = useState("");
+  const [images, setImages] = useState(Array(6).fill(""));
 
   const handleTextChange = (text) => {
     if (bio.length === 100) {
@@ -25,6 +26,18 @@ const ProfileEditModal = ({ visible, closeModal }) => {
       return;
     }
     setBio(text);
+  };
+
+  const addImage = (indx, imageUri) => {
+    const newImages = [...images];
+    newImages[indx] = imageUri;
+    setImages(newImages);
+  };
+
+  const removeImage = (indx) => {
+    const newImages = [...images];
+    newImages[indx] = "";
+    setImages(newImages);
   };
 
   return (
@@ -47,11 +60,14 @@ const ProfileEditModal = ({ visible, closeModal }) => {
               </Button>
             </View>
             <View style={styles.imageContainer}>
-              {Array.from(Array(1).keys()).map((el) => (
-                <ImagePickerCard key={el} hasImage={true} />
-              ))}
-              {Array.from(Array(5).keys()).map((el) => (
-                <ImagePickerCard key={el} hasImage={false} />
+              {images.map((el, indx) => (
+                <ImagePickerCard
+                  imageUri={el}
+                  key={indx}
+                  index={indx}
+                  addImage={addImage}
+                  removeImage={removeImage}
+                />
               ))}
               <Text
                 style={{

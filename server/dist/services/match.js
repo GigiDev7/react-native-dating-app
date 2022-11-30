@@ -55,7 +55,7 @@ const likeUser = (likedById, userId) => __awaiter(void 0, void 0, void 0, functi
         }
     }
     catch (error) {
-        throw new customError_1.CustomError("Error", "User not found");
+        throw error;
     }
 });
 exports.likeUser = likeUser;

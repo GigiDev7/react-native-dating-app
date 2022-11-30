@@ -1,24 +1,36 @@
 import { ImageBackground, StyleSheet, View } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import { Colors } from "../utils/constants";
+import { useState } from "react";
+import { launchImageLibraryAsync } from "expo-image-picker";
 
-const ImagePickerCard = ({ hasImage = false }) => {
-  if (!hasImage) {
+const ImagePickerCard = ({ imageUri, addImage, removeImage, index }) => {
+  const add = async () => {
+    const res = await launchImageLibraryAsync({});
+    if (!res.canceled) {
+      addImage(index, res.assets[0].uri);
+    }
+  };
+
+  const remove = () => {
+    removeImage(index);
+  };
+
+  if (!imageUri) {
     return (
       <View style={styles.container}>
         <View style={styles.iconWrapper}>
-          <AntDesign name="plus" size={24} color="white" />
+          <AntDesign onPress={add} name="plus" size={24} color="white" />
         </View>
       </View>
     );
   }
+
   return (
-    <ImageBackground
-      source={require("../assets/profile.jpg")}
-      style={styles.imageContainer}
-    >
+    <ImageBackground source={{ uri: imageUri }} style={styles.imageContainer}>
       <View style={styles.iconWrapperImage}>
         <AntDesign
+          onPress={remove}
           style={styles.icon}
           name="close"
           size={24}

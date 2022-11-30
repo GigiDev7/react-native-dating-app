@@ -36,7 +36,6 @@ export const loginUser = (email, password) => async (dispatch) => {
       email,
       password,
     });
-
     const currentDate = new Date().getTime();
     const expiresAt = currentDate + 2 * 60 * 60 * 1000;
 

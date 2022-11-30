@@ -8,6 +8,6 @@ export const Colors = {
   gold: "#EEB90C",
 };
 
-export const BASE_URL = "http://192.168.100.2:8000";
+export const BASE_URL = "http://192.168.100.5:8000";
 export const LOCATION_URL =
   "http://api.positionstack.com/v1/reverse?access_key=dc73e571faa1a1705c7b64757501e865&";
