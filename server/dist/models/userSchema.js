@@ -36,6 +36,10 @@ const userSchema = new mongoose_1.default.Schema({
         required: [true, "Password is required"],
         minlength: [6, "Password must be at least 6 characters"],
     },
+    images: {
+        type: [String],
+        default: [],
+    },
     location: {
         coordinates: [Number],
     },

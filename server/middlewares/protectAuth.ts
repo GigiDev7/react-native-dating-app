@@ -20,10 +20,10 @@ export const protectAuth = (
     token,
     process.env.JWT_SECRET as string,
     async (err: any, decodedData: any) => {
-      if (err) {
-        throw new CustomError("Authorization Error", "Authorization failed");
-      }
       try {
+        if (err) {
+          throw new CustomError("Authorization Error", "Authorization failed");
+        }
         const user = await User.findById(decodedData.id, "-password -__v");
         if (user) (req as any).user = user as IUser;
         next();
