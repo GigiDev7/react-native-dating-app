@@ -1,6 +1,6 @@
 import { ImageBackground, StyleSheet, View } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
-import { Colors } from "../utils/constants";
+import { BASE_URL, Colors } from "../utils/constants";
 import { launchImageLibraryAsync } from "expo-image-picker";
 
 const ImagePickerCard = ({ imageUri, addImage, removeImage, index }) => {
@@ -26,7 +26,10 @@ const ImagePickerCard = ({ imageUri, addImage, removeImage, index }) => {
   }
 
   return (
-    <ImageBackground source={{ uri: imageUri }} style={styles.imageContainer}>
+    <ImageBackground
+      source={{ uri: `${BASE_URL}/${imageUri}` }}
+      style={styles.imageContainer}
+    >
       <View style={styles.iconWrapperImage}>
         <AntDesign
           onPress={remove}

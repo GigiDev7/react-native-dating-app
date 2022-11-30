@@ -9,13 +9,19 @@ import {
   Pressable,
   KeyboardAvoidingView,
 } from "react-native";
+import { useSelector } from "react-redux";
 import { Colors } from "../../utils/constants";
 import ImagePickerCard from "../ImagePickerCard";
 import Button from "../ui/Button";
 
 const ProfileEditModal = ({ visible, closeModal }) => {
+  const userImages = useSelector((state) => state.auth.user.images);
+  const initialImages = [...userImages];
+  if (initialImages.length < 6) initialImages.length = 6;
+  initialImages.fill("", 6 - (6 - userImages.length));
+
   const [bio, setBio] = useState("");
-  const [images, setImages] = useState(Array(6).fill(""));
+  const [images, setImages] = useState(initialImages);
 
   const hasProfileUpdated = useRef(false);
 
