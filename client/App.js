@@ -14,7 +14,6 @@ import axios from "axios";
 axios.interceptors.request.use(
   async function (config) {
     const user = await AsyncStorage.getItem("user");
-    console.log(user);
 
     if (user) {
       config.headers.Authorization = `Bearer ${JSON.parse(user).token}`;
