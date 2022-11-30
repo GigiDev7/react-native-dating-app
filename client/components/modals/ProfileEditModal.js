@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import {
   Modal,
   StyleSheet,
@@ -12,13 +12,15 @@ import {
 import { Colors } from "../../utils/constants";
 import ImagePickerCard from "../ImagePickerCard";
 import Button from "../ui/Button";
-import profileImage from "../../assets/profile.jpg";
 
 const ProfileEditModal = ({ visible, closeModal }) => {
   const [bio, setBio] = useState("");
   const [images, setImages] = useState(Array(6).fill(""));
 
+  const hasProfileUpdated = useRef(false);
+
   const handleTextChange = (text) => {
+    hasProfileUpdated.current = true;
     if (bio.length === 100) {
       if (text.length < bio.length) {
         setBio(text);
@@ -29,12 +31,14 @@ const ProfileEditModal = ({ visible, closeModal }) => {
   };
 
   const addImage = (indx, imageUri) => {
+    hasProfileUpdated.current = true;
     const newImages = [...images];
     newImages[indx] = imageUri;
     setImages(newImages);
   };
 
   const removeImage = (indx) => {
+    hasProfileUpdated.current = true;
     const newImages = [...images];
     newImages[indx] = "";
     setImages(newImages);

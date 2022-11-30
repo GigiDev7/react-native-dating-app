@@ -1,7 +1,6 @@
 import { ImageBackground, StyleSheet, View } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import { Colors } from "../utils/constants";
-import { useState } from "react";
 import { launchImageLibraryAsync } from "expo-image-picker";
 
 const ImagePickerCard = ({ imageUri, addImage, removeImage, index }) => {
