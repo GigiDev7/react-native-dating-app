@@ -6,9 +6,16 @@ import ProfileCard from "../components/ProfileCard";
 import * as Location from "expo-location";
 import { LOCATION_URL } from "../utils/constants";
 import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { updateLocation } from "../store/auth";
 
 const HomeScreen = ({ navigation }) => {
   const [isFilterModalShown, setIsFilterModalShown] = useState(false);
+  const dispatch = useDispatch();
+  const userCoordinates = useSelector(
+    (state) => state.auth.user.location.coordinates
+  );
+  const userId = useSelector((state) => state.auth.user._id);
 
   useEffect(() => {
     (async () => {
@@ -21,10 +28,26 @@ const HomeScreen = ({ navigation }) => {
         return;
       }
       let location = await Location.getCurrentPositionAsync();
+
+      if (
+        location.coords.longitude.toFixed(2) ===
+          userCoordinates[0].toFixed(2) &&
+        location.coords.latitude.toFixed(2) === userCoordinates[1].toFixed(2)
+      ) {
+        return;
+      }
       const { data } = await axios.get(
         `${LOCATION_URL}query=${location.coords.latitude},${location.coords.longitude}`
       );
-      console.log(data.data[0].county, data.data[0].country);
+      dispatch(
+        updateLocation(
+          userId,
+          location.coords.longitude,
+          location.coords.latitude,
+          data.data[0].county,
+          data.data[0].country
+        )
+      );
     })();
   }, []);
 

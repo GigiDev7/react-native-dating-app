@@ -9,6 +9,23 @@ import { Provider, useSelector, useDispatch } from "react-redux";
 import { useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { authActions, logoutUser } from "./store/auth";
+import axios from "axios";
+
+axios.interceptors.request.use(
+  async function (config) {
+    const user = await AsyncStorage.getItem("user");
+    console.log(user);
+
+    if (user) {
+      config.headers.Authorization = `Bearer ${JSON.parse(user).token}`;
+    }
+
+    return config;
+  },
+  function (err) {
+    return Promise.reject(err);
+  }
+);
 
 const Stack = createNativeStackNavigator();
 

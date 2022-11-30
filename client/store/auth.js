@@ -68,4 +68,23 @@ export const logoutUser = () => async (dispatch) => {
   dispatch(authActions.logout());
 };
 
+export const updateLocation =
+  (userId, longitude, latitude, city, country) => async (dispatch) => {
+    try {
+      const { data } = await axios.patch(
+        `${BASE_URL}/user/location/${userId}`,
+        {
+          latitude,
+          longitude,
+          city,
+          country,
+        }
+      );
+      await AsyncStorage.setItem("user", JSON.stringify(data));
+      dispatch(authActions.setUser(data));
+    } catch (error) {
+      console.log(error?.response?.data);
+    }
+  };
+
 export default authSlice;
