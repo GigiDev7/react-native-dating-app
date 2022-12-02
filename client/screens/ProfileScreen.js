@@ -3,32 +3,16 @@ import Button from "../components/ui/Button";
 import { Colors } from "../utils/constants";
 import { Fontisto, MaterialIcons } from "@expo/vector-icons";
 import PricingModal from "../components/modals/PricingModal";
-import { useState } from "react";
 import ProfileEditModal from "../components/modals/ProfileEditModal";
 import { logoutUser } from "../store/auth";
 import { useDispatch } from "react-redux";
+import { useModal } from "../hooks/useModal";
 
 const ProfileScreen = () => {
-  const [isPricingModalShown, setIsPricingModalShown] = useState(false);
-  const [isEditModalShown, setIsEditModalShown] = useState(false);
+  const pricingModal = useModal();
+  const editModal = useModal();
 
   const dispatch = useDispatch();
-
-  const openPricingModal = () => {
-    setIsPricingModalShown(true);
-  };
-
-  const closePricingModal = () => {
-    setIsPricingModalShown(false);
-  };
-
-  const openEditModal = () => {
-    setIsEditModalShown(true);
-  };
-
-  const closeEditModal = () => {
-    setIsEditModalShown(false);
-  };
 
   const logout = () => {
     dispatch(logoutUser());
@@ -36,15 +20,17 @@ const ProfileScreen = () => {
 
   return (
     <View style={styles.container}>
-      {isPricingModalShown && <PricingModal closeModal={closePricingModal} />}
+      {pricingModal.isModalShown && (
+        <PricingModal closeModal={pricingModal.closeModal} />
+      )}
       <ProfileEditModal
-        closeModal={closeEditModal}
-        visible={isEditModalShown}
+        closeModal={editModal.closeModal}
+        visible={editModal.isModalShown}
       />
       <View style={styles.infoContainer}>
         <Image style={styles.image} source={require("../assets/profile.jpg")} />
         <MaterialIcons
-          onPress={openEditModal}
+          onPress={editModal.openModal}
           style={styles.icon}
           name="edit"
           size={24}
@@ -67,7 +53,7 @@ const ProfileScreen = () => {
           <Text style={styles.footerText}>See Who Likes You & More</Text>
         </View>
         <Button
-          onPress={openPricingModal}
+          onPress={pricingModal.openModal}
           textStyle={{ color: Colors.gold, fontWeight: "bold" }}
           style={styles.button}
         >

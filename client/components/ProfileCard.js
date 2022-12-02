@@ -2,21 +2,13 @@ import { View, ImageBackground, Text, StyleSheet } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { Colors } from "../utils/constants";
 import ProfileModal from "./modals/ProfileModal";
-import { useState } from "react";
 import ProfileInfo from "./ProfileInfo";
 import HeartIcon from "./HeartIcon";
 import DislikeIcon from "./DislikeIcon";
+import { useModal } from "../hooks/useModal";
 
 const ProfileCard = () => {
-  const [isProfileModalShown, setIsProfileModalShown] = useState(false);
-
-  const showProfileModal = () => {
-    setIsProfileModalShown(true);
-  };
-
-  const closeProfileModal = () => {
-    setIsProfileModalShown(false);
-  };
+  const { isModalShown, openModal, closeModal } = useModal();
 
   return (
     <>
@@ -24,8 +16,8 @@ const ProfileCard = () => {
         name={"Giorgi"}
         age={25}
         location={50}
-        closeModal={closeProfileModal}
-        visible={isProfileModalShown}
+        closeModal={closeModal}
+        visible={isModalShown}
         bio="my bio !!!!!"
       />
       <ImageBackground
@@ -36,7 +28,7 @@ const ProfileCard = () => {
           <ProfileInfo name="Giorgi" age={25} location={50} />
           <View>
             <Ionicons
-              onPress={showProfileModal}
+              onPress={openModal}
               name="md-arrow-redo-circle-sharp"
               size={40}
               color={Colors.primary}

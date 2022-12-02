@@ -8,9 +8,10 @@ import { LOCATION_URL } from "../utils/constants";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { updateLocation } from "../store/auth";
+import { useModal } from "../hooks/useModal";
 
 const HomeScreen = ({ navigation }) => {
-  const [isFilterModalShown, setIsFilterModalShown] = useState(false);
+  const { isModalShown, closeModal, openModal } = useModal();
   const dispatch = useDispatch();
   const userCoordinates = useSelector(
     (state) => state.auth.user.location.coordinates
@@ -51,30 +52,17 @@ const HomeScreen = ({ navigation }) => {
     })();
   }, []);
 
-  const showFilterModal = () => {
-    setIsFilterModalShown(true);
-  };
-
-  const closeFilterModal = () => {
-    setIsFilterModalShown(false);
-  };
-
   useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: ({}) => (
-        <Ionicons
-          onPress={showFilterModal}
-          name="filter"
-          color="gray"
-          size={24}
-        />
+        <Ionicons onPress={openModal} name="filter" color="gray" size={24} />
       ),
     });
   }, []);
 
   return (
     <View style={styles.container}>
-      <FilterModal visible={isFilterModalShown} closeModal={closeFilterModal} />
+      <FilterModal visible={isModalShown} closeModal={closeModal} />
       <ProfileCard />
     </View>
   );
