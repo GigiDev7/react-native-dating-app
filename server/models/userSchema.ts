@@ -17,6 +17,7 @@ const userSchema = new mongoose.Schema(
     },
     bio: {
       type: String,
+      default: "",
     },
     gender: {
       type: String,
@@ -40,22 +41,38 @@ const userSchema = new mongoose.Schema(
     location: {
       coordinates: [Number],
     },
-    city: String,
-    country: String,
+    city: {
+      type: String,
+      default: "",
+    },
+    country: {
+      type: String,
+      default: "",
+    },
     likes: {
       type: [mongoose.Schema.Types.ObjectId],
+      ref: "User",
+      default: [],
     },
     dislikes: {
       type: [mongoose.Schema.Types.ObjectId],
+      ref: "User",
+      default: [],
     },
     likedBy: {
       type: [mongoose.Schema.Types.ObjectId],
+      ref: "User",
+      default: [],
     },
     dislikedBy: {
       type: [mongoose.Schema.Types.ObjectId],
+      ref: "User",
+      default: [],
     },
     matches: {
       type: [mongoose.Schema.Types.ObjectId],
+      ref: "User",
+      default: [],
     },
     likesLimit: {
       type: Number,

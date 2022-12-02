@@ -27,6 +27,9 @@ export const updateImages = (
     userId,
     { images: imagePaths, bio },
     { new: true }
+  ).populate(
+    "likes likedBy dislikes dislikedBy matches",
+    "_id firstname lastname age gender images location city country"
   );
 };
 

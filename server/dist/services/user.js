@@ -17,6 +17,7 @@ const userSchema_1 = __importDefault(require("../models/userSchema"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const customError_1 = require("../utils/customError");
+const pipeline_1 = require("../utils/pipeline");
 const createAccessToken = (userId) => {
     return jsonwebtoken_1.default.sign({ id: userId }, process.env.JWT_SECRET, {
         expiresIn: "2h",
@@ -36,7 +37,15 @@ const registerUser = (userData) => __awaiter(void 0, void 0, void 0, function* (
 });
 exports.registerUser = registerUser;
 const loginUser = (email, password) => __awaiter(void 0, void 0, void 0, function* () {
-    const user = yield userSchema_1.default.findOne({ email });
+    const pipeline = (0, pipeline_1.genPipelineObject)();
+    const result = yield userSchema_1.default.aggregate([
+        {
+            $match: { email },
+        },
+        ...pipeline,
+    ]);
+    const user = result[0];
+    console.log(user);
     if (!user) {
         throw new customError_1.CustomError("Authentication Error", "User does not exist");
     }
@@ -49,7 +58,17 @@ const loginUser = (email, password) => __awaiter(void 0, void 0, void 0, functio
 });
 exports.loginUser = loginUser;
 const updateLocation = (userId, locationData) => __awaiter(void 0, void 0, void 0, function* () {
-    const user = yield userSchema_1.default.findById(userId, "-password,-__v");
+    const pipeline = (0, pipeline_1.genPipelineObject)();
+    const result = yield userSchema_1.default.aggregate([
+        {
+            $match: { _id: userId },
+        },
+        {
+            $unset: ["__v", "passsword"],
+        },
+        ...pipeline,
+    ]);
+    const user = result[0];
     if (user) {
         user.location.type = "Point";
         user.city = locationData.city;

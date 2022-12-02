@@ -1,14 +1,25 @@
 import User from "../models/userSchema";
 import { CustomError } from "../utils/customError";
 import { Types } from "mongoose";
+import { genPipelineObject } from "../utils/pipeline";
 
 export const likeUser = async (
   likedById: Types.ObjectId,
   userId: Types.ObjectId
 ) => {
   try {
+    const pipeline = genPipelineObject();
     let isMatch = false;
-    const user = await User.findById(likedById, "-password");
+    const result = await User.aggregate([
+      {
+        $match: { _id: likedById },
+      },
+      {
+        $unset: ["__v", "password"],
+      },
+      ...pipeline,
+    ]);
+    const user = result[0];
     const likedUser = await User.findById(userId, "-password");
 
     if (

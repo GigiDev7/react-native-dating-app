@@ -15,10 +15,21 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.dislikeUser = exports.likeUser = void 0;
 const userSchema_1 = __importDefault(require("../models/userSchema"));
 const customError_1 = require("../utils/customError");
+const pipeline_1 = require("../utils/pipeline");
 const likeUser = (likedById, userId) => __awaiter(void 0, void 0, void 0, function* () {
     try {
+        const pipeline = (0, pipeline_1.genPipelineObject)();
         let isMatch = false;
-        const user = yield userSchema_1.default.findById(likedById, "-password");
+        const result = yield userSchema_1.default.aggregate([
+            {
+                $match: { _id: likedById },
+            },
+            {
+                $unset: ["__v", "password"],
+            },
+            ...pipeline,
+        ]);
+        const user = result[0];
         const likedUser = yield userSchema_1.default.findById(userId, "-password");
         if (user &&
             user.accountType === "regular" &&

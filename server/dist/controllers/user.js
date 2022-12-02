@@ -36,7 +36,7 @@ exports.register = register;
 const login = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { user, token } = yield (0, user_1.loginUser)(req.body.email, req.body.password);
-        const _b = user._doc, { password, __v } = _b, userData = __rest(_b, ["password", "__v"]);
+        const { password, __v } = user, userData = __rest(user, ["password", "__v"]);
         userData.token = token;
         res.status(200).json(userData);
     }

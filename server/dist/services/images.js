@@ -20,7 +20,7 @@ const storage = multer_1.default.diskStorage({
     },
 });
 const updateImages = (userId, imagePaths, bio) => {
-    return userSchema_1.default.findByIdAndUpdate(userId, { images: imagePaths, bio }, { new: true });
+    return userSchema_1.default.findByIdAndUpdate(userId, { images: imagePaths, bio }, { new: true }).populate("likes likedBy dislikes dislikedBy matches", "_id firstname lastname age gender images location city country");
 };
 exports.updateImages = updateImages;
 exports.upload = (0, multer_1.default)({ storage });

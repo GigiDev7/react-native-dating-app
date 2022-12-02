@@ -4,6 +4,7 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import { CustomError } from "../utils/customError";
 import { ObjectId } from "mongoose";
+import { genPipelineObject } from "../utils/pipeline";
 
 const createAccessToken = (userId: string | ObjectId) => {
   return jwt.sign({ id: userId }, process.env.JWT_SECRET as string, {
@@ -27,7 +28,15 @@ export const registerUser = async (userData: IUser) => {
 };
 
 export const loginUser = async (email: string, password: string) => {
-  const user = await User.findOne({ email });
+  const pipeline = genPipelineObject();
+  const result = await User.aggregate([
+    {
+      $match: { email },
+    },
+    ...pipeline,
+  ]);
+  const user = result[0];
+  console.log(user);
   if (!user) {
     throw new CustomError("Authentication Error", "User does not exist");
   }
@@ -54,7 +63,17 @@ export const updateLocation = async (
     country: string;
   }
 ) => {
-  const user = await User.findById(userId, "-password,-__v");
+  const pipeline = genPipelineObject();
+  const result = await User.aggregate([
+    {
+      $match: { _id: userId },
+    },
+    {
+      $unset: ["__v", "passsword"],
+    },
+    ...pipeline,
+  ]);
+  const user = result[0];
   if (user) {
     (user.location as any).type = "Point";
     user.city = locationData.city;
