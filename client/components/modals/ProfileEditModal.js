@@ -82,7 +82,10 @@ const ProfileEditModal = ({ visible, closeModal }) => {
       const existingImages = images.filter(
         (el) => typeof el === "string" && el !== ""
       );
-      const data = createFormData(uploadedImages, { images: existingImages });
+      const data = createFormData(uploadedImages, {
+        images: existingImages,
+        bio,
+      });
       dispatch(uploadImages(data, user._id));
     }
     closeModal();
@@ -135,7 +138,7 @@ const ProfileEditModal = ({ visible, closeModal }) => {
                 ABOUT ME
               </Text>
               <TextInput
-                value={bio}
+                value={user?.bio || bio}
                 onChangeText={handleTextChange}
                 style={styles.input}
                 multiline={true}

@@ -2,7 +2,6 @@ import { createSlice } from "@reduxjs/toolkit";
 import { BASE_URL } from "../utils/constants";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useJwt } from "react-jwt";
 import { handleError } from "../utils/error";
 
 const authSlice = createSlice({
@@ -68,6 +67,14 @@ export const logoutUser = () => async (dispatch) => {
   dispatch(authActions.logout());
 };
 
+const updateUser = (newUser) => async (dispatch) => {
+  const str = await AsyncStorage.getItem("user");
+  const user = JSON.parse(str);
+  newUser.token = user.token;
+  await AsyncStorage.setItem("user", JSON.stringify(newUser));
+  dispatch(authActions.setUser(newUser));
+};
+
 export const updateLocation =
   (userId, longitude, latitude, city, country) => async (dispatch) => {
     try {
@@ -80,11 +87,7 @@ export const updateLocation =
           country,
         }
       );
-      const str = await AsyncStorage.getItem("user");
-      const user = JSON.parse(str);
-      data.token = user.token;
-      await AsyncStorage.setItem("user", JSON.stringify(data));
-      dispatch(authActions.setUser(data));
+      updateUser(data);
     } catch (error) {
       console.log(error?.response?.data);
     }
@@ -96,11 +99,7 @@ export const uploadImages = (photos, userId) => async (dispatch) => {
       `${BASE_URL}/user/images/${userId}`,
       photos
     );
-    const str = await AsyncStorage.getItem("user");
-    const user = JSON.parse(str);
-    data.token = user.token;
-    await AsyncStorage.setItem("user", JSON.stringify(data));
-    dispatch(authActions.setUser(data));
+    updateUser(data);
   } catch (error) {
     console.log(error);
   }

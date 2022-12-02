@@ -19,8 +19,8 @@ const storage = multer_1.default.diskStorage({
         cb(null, Date.now() + file.originalname);
     },
 });
-const updateImages = (userId, imagePaths) => {
-    return userSchema_1.default.findByIdAndUpdate(userId, { images: imagePaths }, { new: true });
+const updateImages = (userId, imagePaths, bio) => {
+    return userSchema_1.default.findByIdAndUpdate(userId, { images: imagePaths, bio }, { new: true });
 };
 exports.updateImages = updateImages;
 exports.upload = (0, multer_1.default)({ storage });

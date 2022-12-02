@@ -20,9 +20,14 @@ const storage = multer.diskStorage({
 
 export const updateImages = (
   userId: mongoose.Types.ObjectId,
-  imagePaths: string[]
+  imagePaths: string[],
+  bio: string
 ) => {
-  return User.findByIdAndUpdate(userId, { images: imagePaths }, { new: true });
+  return User.findByIdAndUpdate(
+    userId,
+    { images: imagePaths, bio },
+    { new: true }
+  );
 };
 
 export const upload = multer({ storage });

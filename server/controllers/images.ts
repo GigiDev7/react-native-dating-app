@@ -26,7 +26,7 @@ export const uploadImage = async (
         }
       });
     }
-    const user = await updateImages(userId, paths);
+    const user = await updateImages(userId, paths, req.body.bio);
     const { password, __v, ...updatedUser } = (user as any)._doc;
     res.status(201).json(updatedUser);
   } catch (error) {

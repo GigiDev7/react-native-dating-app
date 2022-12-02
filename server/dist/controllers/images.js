@@ -44,7 +44,7 @@ const uploadImage = (req, res, next) => __awaiter(void 0, void 0, void 0, functi
                 }
             }));
         }
-        const user = yield (0, images_1.updateImages)(userId, paths);
+        const user = yield (0, images_1.updateImages)(userId, paths, req.body.bio);
         const _a = user._doc, { password, __v } = _a, updatedUser = __rest(_a, ["password", "__v"]);
         res.status(201).json(updatedUser);
     }
