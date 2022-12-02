@@ -3,11 +3,11 @@ import { AntDesign } from "@expo/vector-icons";
 import { BASE_URL, Colors } from "../utils/constants";
 import { launchImageLibraryAsync } from "expo-image-picker";
 
-const ImagePickerCard = ({ imageUri, addImage, removeImage, index }) => {
+const ImagePickerCard = ({ imageInfo, addImage, removeImage, index }) => {
   const add = async () => {
     const res = await launchImageLibraryAsync({});
     if (!res.canceled) {
-      addImage(index, res.assets[0].uri);
+      addImage(index, res.assets[0]);
     }
   };
 
@@ -15,7 +15,7 @@ const ImagePickerCard = ({ imageUri, addImage, removeImage, index }) => {
     removeImage(index);
   };
 
-  if (!imageUri) {
+  if (!imageInfo) {
     return (
       <View style={styles.container}>
         <View style={styles.iconWrapper}>
@@ -27,7 +27,9 @@ const ImagePickerCard = ({ imageUri, addImage, removeImage, index }) => {
 
   return (
     <ImageBackground
-      source={{ uri: `${BASE_URL}/${imageUri}` }}
+      source={{
+        uri: imageInfo?.uri ? imageInfo.uri : `${BASE_URL}/${imageInfo}`,
+      }}
       style={styles.imageContainer}
     >
       <View style={styles.iconWrapperImage}>

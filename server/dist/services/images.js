@@ -10,10 +10,9 @@ const fs_1 = __importDefault(require("fs"));
 const storage = multer_1.default.diskStorage({
     destination(req, file, cb) {
         const dir = `./images/${req.user._id}`;
-        if (fs_1.default.existsSync(dir)) {
-            fs_1.default.rmSync(dir, { recursive: true, force: true });
+        if (!fs_1.default.existsSync(dir)) {
+            fs_1.default.mkdirSync(dir, { recursive: true });
         }
-        fs_1.default.mkdirSync(dir, { recursive: true });
         cb(null, dir);
     },
     filename(req, file, cb) {

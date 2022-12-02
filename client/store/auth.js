@@ -80,11 +80,30 @@ export const updateLocation =
           country,
         }
       );
+      const str = await AsyncStorage.getItem("user");
+      const user = JSON.parse(str);
+      data.token = user.token;
       await AsyncStorage.setItem("user", JSON.stringify(data));
       dispatch(authActions.setUser(data));
     } catch (error) {
       console.log(error?.response?.data);
     }
   };
+
+export const uploadImages = (photos, userId) => async (dispatch) => {
+  try {
+    const { data } = await axios.patch(
+      `${BASE_URL}/user/images/${userId}`,
+      photos
+    );
+    const str = await AsyncStorage.getItem("user");
+    const user = JSON.parse(str);
+    data.token = user.token;
+    await AsyncStorage.setItem("user", JSON.stringify(data));
+    dispatch(authActions.setUser(data));
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 export default authSlice;

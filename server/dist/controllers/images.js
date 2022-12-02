@@ -26,10 +26,24 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.uploadImage = void 0;
 const mongoose_1 = __importDefault(require("mongoose"));
 const images_1 = require("../services/images");
+const promises_1 = __importDefault(require("fs/promises"));
 const uploadImage = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const userId = new mongoose_1.default.Types.ObjectId(req.params.userId);
-        const paths = req.files.map((el) => el.path);
+        let paths = req.files.map((el) => el.path);
+        if (req.body.images) {
+            paths = [...paths, ...req.body.images.split(",")];
+            const files = yield promises_1.default.readdir(`./images/${userId}`);
+            const images = paths.map((p) => {
+                const ind = p.lastIndexOf("\\");
+                return p.slice(ind + 1);
+            });
+            files.forEach((f) => __awaiter(void 0, void 0, void 0, function* () {
+                if (!images.includes(f)) {
+                    yield promises_1.default.unlink(`./images/${userId}/${f}`);
+                }
+            }));
+        }
         const user = yield (0, images_1.updateImages)(userId, paths);
         const _a = user._doc, { password, __v } = _a, updatedUser = __rest(_a, ["password", "__v"]);
         res.status(201).json(updatedUser);

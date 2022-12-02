@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   Modal,
   StyleSheet,
@@ -8,20 +8,46 @@ import {
   Keyboard,
   Pressable,
   KeyboardAvoidingView,
+  Platform,
 } from "react-native";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Colors } from "../../utils/constants";
 import ImagePickerCard from "../ImagePickerCard";
 import Button from "../ui/Button";
+import { uploadImages } from "../../store/auth";
+
+const createFormData = (photos = [], body = {}) => {
+  const data = new FormData();
+
+  Object.keys(body).forEach((key) => {
+    data.append(key, body[key]);
+  });
+
+  photos.forEach((p) => {
+    data.append("photo", {
+      name: p.fileName,
+      type: p.type,
+      uri: Platform.OS === "ios" ? p.uri.replace("file://", "") : p.uri,
+    });
+  });
+
+  return data;
+};
 
 const ProfileEditModal = ({ visible, closeModal }) => {
-  const userImages = useSelector((state) => state.auth.user.images);
-  const initialImages = [...userImages];
-  if (initialImages.length < 6) initialImages.length = 6;
-  initialImages.fill("", 6 - (6 - userImages.length));
+  const user = useSelector((state) => state.auth.user);
 
   const [bio, setBio] = useState("");
-  const [images, setImages] = useState(initialImages);
+  const [images, setImages] = useState([]);
+
+  useEffect(() => {
+    const initialImages = [...user.images];
+    if (initialImages.length < 6) initialImages.length = 6;
+    initialImages.fill("", user.images.length);
+    setImages(initialImages);
+  }, [user]);
+
+  const dispatch = useDispatch();
 
   const hasProfileUpdated = useRef(false);
 
@@ -36,10 +62,10 @@ const ProfileEditModal = ({ visible, closeModal }) => {
     setBio(text);
   };
 
-  const addImage = (indx, imageUri) => {
+  const addImage = (indx, imageInfo) => {
     hasProfileUpdated.current = true;
     const newImages = [...images];
-    newImages[indx] = imageUri;
+    newImages[indx] = imageInfo;
     setImages(newImages);
   };
 
@@ -50,6 +76,19 @@ const ProfileEditModal = ({ visible, closeModal }) => {
     setImages(newImages);
   };
 
+  const handleModalClose = async () => {
+    if (hasProfileUpdated.current) {
+      const uploadedImages = images.filter((el) => typeof el !== "string");
+      const existingImages = images.filter(
+        (el) => typeof el === "string" && el !== ""
+      );
+      const data = createFormData(uploadedImages, { images: existingImages });
+      dispatch(uploadImages(data, user._id));
+    }
+    closeModal();
+    hasProfileUpdated.current = false;
+  };
+
   return (
     <Modal style={styles.modal} animationType="slide" visible={visible}>
       <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }}>
@@ -58,7 +97,7 @@ const ProfileEditModal = ({ visible, closeModal }) => {
             <View style={styles.header}>
               <Text style={styles.headerTitle}>Edit Info</Text>
               <Button
-                onPress={closeModal}
+                onPress={handleModalClose}
                 textStyle={{
                   color: Colors.gray500,
                   fontWeight: "bold",
@@ -72,7 +111,7 @@ const ProfileEditModal = ({ visible, closeModal }) => {
             <View style={styles.imageContainer}>
               {images.map((el, indx) => (
                 <ImagePickerCard
-                  imageUri={el}
+                  imageInfo={el}
                   key={indx}
                   index={indx}
                   addImage={addImage}

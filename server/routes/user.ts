@@ -19,7 +19,7 @@ router.route("/dislike/:userId").patch(protectAuth, dislike);
 router.route("/location/:userId").patch(protectAuth, patchLocation);
 router
   .route("/images/:userId")
-  .patch(protectAuth, upload.array("photo", 6), uploadImage);
+  .patch(protectAuth, upload.array("photo"), uploadImage);
 router.route("/").get(protectAuth, getUsers);
 
 export default router;

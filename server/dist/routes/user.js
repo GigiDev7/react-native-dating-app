@@ -19,6 +19,6 @@ router.route("/dislike/:userId").patch(protectAuth_1.protectAuth, like_1.dislike
 router.route("/location/:userId").patch(protectAuth_1.protectAuth, user_1.patchLocation);
 router
     .route("/images/:userId")
-    .patch(protectAuth_1.protectAuth, images_1.upload.array("photo", 6), images_2.uploadImage);
+    .patch(protectAuth_1.protectAuth, images_1.upload.array("photo"), images_2.uploadImage);
 router.route("/").get(protectAuth_1.protectAuth, user_1.getUsers);
 exports.default = router;

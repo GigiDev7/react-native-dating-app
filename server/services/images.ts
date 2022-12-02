@@ -7,11 +7,9 @@ const storage = multer.diskStorage({
   destination(req, file, cb) {
     const dir = `./images/${(req as any).user._id}`;
 
-    if (fs.existsSync(dir)) {
-      fs.rmSync(dir, { recursive: true, force: true });
+    if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir, { recursive: true });
     }
-
-    fs.mkdirSync(dir, { recursive: true });
 
     cb(null, dir);
   },
