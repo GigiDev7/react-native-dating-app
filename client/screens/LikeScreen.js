@@ -7,47 +7,50 @@ import {
   View,
 } from "react-native";
 import { Colors } from "../utils/constants";
-import image from "../assets/profile.jpg";
 import Button from "../components/ui/Button";
 import PricingModal from "../components/modals/PricingModal";
-import { useState } from "react";
+import { useSelector } from "react-redux";
+import { useModal } from "../hooks/useModal";
 
 const LikeScreen = () => {
-  const [isPricingModalShown, setIsPricingModalShown] = useState(false);
-
-  const showModal = () => {
-    setIsPricingModalShown(true);
-  };
-
-  const closeModal = () => {
-    setIsPricingModalShown(false);
-  };
+  const { isModalShown, closeModal, openModal } = useModal();
+  const user = useSelector((state) => state.auth.user);
 
   return (
     <View style={styles.container}>
-      {isPricingModalShown && <PricingModal closeModal={closeModal} />}
+      {isModalShown && <PricingModal closeModal={closeModal} />}
       <View style={styles.header}>
-        <Text style={styles.headerText}>1 Like</Text>
+        <Text style={styles.headerText}>
+          {user?.likedBy.length} {user?.likedBy.length < 2 ? "Like" : "Likes"}
+        </Text>
       </View>
       <Text style={styles.text}>
         Upgrade to Gold to see people who already liked you.
       </Text>
       <FlatList
         style={styles.list}
-        data={[image, image]}
+        data={user.likedBy}
         numColumns={2}
-        keyExtractor={() => Math.random()}
+        keyExtractor={(item) => item}
         renderItem={({ item }) => (
-          <ImageBackground blurRadius={70} source={item} style={styles.image}>
-            <View style={styles.infoBlur}>
+          <ImageBackground
+            blurRadius={user?.accountType === "regular" ? 70 : 0}
+            source={item}
+            style={styles.image}
+          >
+            <View
+              style={user?.accountType === "regular" ? styles.infoBlur : {}}
+            >
               <Text style={styles.userInfo}>Giorgi, 25</Text>
             </View>
           </ImageBackground>
         )}
       />
-      <Button onPress={showModal} style={styles.button}>
-        SEE WHO LIKES YOU
-      </Button>
+      {user?.accountType === "regular" && (
+        <Button onPress={openModal} style={styles.button}>
+          SEE WHO LIKES YOU
+        </Button>
+      )}
     </View>
   );
 };
