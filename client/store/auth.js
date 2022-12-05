@@ -105,4 +105,16 @@ export const uploadImages = (photos, userId) => async (dispatch) => {
   }
 };
 
+export const updatePushToken = (userId, pushToken) => async (dispatch) => {
+  try {
+    const { data } = await axios.patch(`${BASE_URL}/user/pushToken`, {
+      userId,
+      pushToken,
+    });
+    updateUser(data);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export default authSlice;

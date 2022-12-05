@@ -8,7 +8,7 @@ import store from "./store";
 import { Provider, useSelector, useDispatch } from "react-redux";
 import { useEffect, useRef, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { authActions, logoutUser } from "./store/auth";
+import { authActions, logoutUser, updatePushToken } from "./store/auth";
 import axios from "axios";
 import * as Notifications from "expo-notifications";
 
@@ -70,8 +70,6 @@ const Root = () => {
 
   const dispatch = useDispatch();
 
-  const [expoPushToken, setExpoPushToken] = useState("");
-
   const notificationListener = useRef();
   const responseListener = useRef();
 
@@ -83,7 +81,7 @@ const Root = () => {
         const remainingTime = +expiresAt - new Date().getTime();
 
         registerForPushNotificationsAsync().then((token) =>
-          setExpoPushToken(token)
+          dispatch(updatePushToken(JSON.parse(user)._id, token))
         );
 
         notificationListener.current =
