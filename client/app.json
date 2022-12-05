@@ -34,6 +34,13 @@
           "photosPermission": "App needs permission to your photos",
           "cameraPermission": "App needs permissio to your camera"
         }
+      ],
+      [
+        "expo-notifications",
+        {
+          "icon": "./local/assets/tinder.png",
+          "color": "#ffffff"
+        }
       ]
     ]
   }

@@ -6,10 +6,46 @@ import MainStack from "./MainStack";
 import AuthStack from "./AuthStack";
 import store from "./store";
 import { Provider, useSelector, useDispatch } from "react-redux";
-import { useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { authActions, logoutUser } from "./store/auth";
 import axios from "axios";
+import * as Notifications from "expo-notifications";
+
+async function registerForPushNotificationsAsync() {
+  let token;
+
+  const { status: existingStatus } = await Notifications.getPermissionsAsync();
+  let finalStatus = existingStatus;
+  if (existingStatus !== "granted") {
+    const { status } = await Notifications.requestPermissionsAsync();
+    finalStatus = status;
+  }
+  if (finalStatus !== "granted") {
+    alert("Failed to get push token for push notification!");
+    return;
+  }
+  token = (await Notifications.getExpoPushTokenAsync()).data;
+
+  if (Platform.OS === "android") {
+    Notifications.setNotificationChannelAsync("default", {
+      name: "default",
+      importance: Notifications.AndroidImportance.MAX,
+      vibrationPattern: [0, 250, 250, 250],
+      lightColor: "#FF231F7C",
+    });
+  }
+
+  return token;
+}
+
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: false,
+    shouldSetBadge: false,
+  }),
+});
 
 axios.interceptors.request.use(
   async function (config) {
@@ -34,12 +70,31 @@ const Root = () => {
 
   const dispatch = useDispatch();
 
+  const [expoPushToken, setExpoPushToken] = useState("");
+
+  const notificationListener = useRef();
+  const responseListener = useRef();
+
   useEffect(() => {
     (async function () {
       const user = await AsyncStorage.getItem("user");
       if (user) {
         const expiresAt = await AsyncStorage.getItem("expiresAt");
         const remainingTime = +expiresAt - new Date().getTime();
+
+        registerForPushNotificationsAsync().then((token) =>
+          setExpoPushToken(token)
+        );
+
+        notificationListener.current =
+          Notifications.addNotificationReceivedListener((notf) =>
+            console.log(notf)
+          );
+
+        responseListener.current =
+          Notifications.addNotificationResponseReceivedListener((response) => {
+            console.log(response);
+          });
 
         if (remainingTime > 60 * 1000) {
           const newTimer = setTimeout(() => {
@@ -57,6 +112,10 @@ const Root = () => {
 
     return () => {
       clearTimeout(timer);
+      Notifications.removeNotificationSubscription(
+        notificationListener.current
+      );
+      Notifications.removeNotificationSubscription(responseListener.current);
     };
   }, []);
 

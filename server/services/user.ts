@@ -36,7 +36,7 @@ export const loginUser = async (email: string, password: string) => {
     ...pipeline,
   ]);
   const user = result[0];
-  console.log(user);
+
   if (!user) {
     throw new CustomError("Authentication Error", "User does not exist");
   }

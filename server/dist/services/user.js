@@ -45,7 +45,6 @@ const loginUser = (email, password) => __awaiter(void 0, void 0, void 0, functio
         ...pipeline,
     ]);
     const user = result[0];
-    console.log(user);
     if (!user) {
         throw new customError_1.CustomError("Authentication Error", "User does not exist");
     }

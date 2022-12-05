@@ -24,6 +24,15 @@ const MainStack = () => {
       <Tab.Screen
         options={{
           tabBarIcon: ({ color, size }) => (
+            <Ionicons name="person" color={color} size={size} />
+          ),
+        }}
+        name="Profile"
+        component={ProfileScreen}
+      />
+      <Tab.Screen
+        options={{
+          tabBarIcon: ({ color, size }) => (
             <Fontisto name="tinder" color={color} size={size} />
           ),
         }}
@@ -47,15 +56,6 @@ const MainStack = () => {
         }}
         name="Messages"
         component={MesssagesScreen}
-      />
-      <Tab.Screen
-        options={{
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="person" color={color} size={size} />
-          ),
-        }}
-        name="Profile"
-        component={ProfileScreen}
       />
     </Tab.Navigator>
   );
