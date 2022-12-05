@@ -17,6 +17,7 @@ router.route("/login").post(authValidator_1.loginValidation, validationHandler_1
 router.route("/like/:userId").patch(protectAuth_1.protectAuth, like_1.like);
 router.route("/dislike/:userId").patch(protectAuth_1.protectAuth, like_1.dislike);
 router.route("/location/:userId").patch(protectAuth_1.protectAuth, user_1.patchLocation);
+router.route("/pushToken").patch(protectAuth_1.protectAuth, user_1.updatePushToken);
 router
     .route("/images/:userId")
     .patch(protectAuth_1.protectAuth, images_1.upload.array("photo"), images_2.uploadImage);

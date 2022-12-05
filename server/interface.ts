@@ -20,4 +20,5 @@ export interface IUser {
   likesLimit: number;
   limitExpiration: number;
   accountType?: string;
+  pushToken: string;
 }

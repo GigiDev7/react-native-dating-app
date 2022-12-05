@@ -1,9 +1,11 @@
 import { Request, Response, NextFunction } from "express";
+import mongoose from "mongoose";
 import {
   loginUser,
   registerUser,
   updateLocation,
   findUsers,
+  handlePushToken,
 } from "../services/user";
 
 export const register = async (
@@ -85,6 +87,20 @@ export const getUsers = async (
 
     const users = await findUsers(filterObject, distance, coords);
     res.status(200).json(users);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const updatePushToken = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const userId = new mongoose.Types.ObjectId(req.body.userId);
+    const user = await handlePushToken(req.body.pushToken, userId);
+    res.status(201).json(user);
   } catch (error) {
     next(error);
   }

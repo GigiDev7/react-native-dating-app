@@ -3,7 +3,7 @@ import User from "../models/userSchema";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import { CustomError } from "../utils/customError";
-import { ObjectId } from "mongoose";
+import mongoose, { ObjectId } from "mongoose";
 import { genPipelineObject } from "../utils/pipeline";
 
 const createAccessToken = (userId: string | ObjectId) => {
@@ -117,4 +117,14 @@ export const findUsers = async (
     },
   ]);
   return users;
+};
+
+export const handlePushToken = (
+  pushToken: string,
+  userId: mongoose.Types.ObjectId
+) => {
+  return User.findByIdAndUpdate(userId, { pushToken }, { new: true }).populate(
+    "likes likedBy dislikes dislikedBy matches",
+    "_id firstname lastname age gender images location city country"
+  );
 };

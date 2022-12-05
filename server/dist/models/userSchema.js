@@ -89,6 +89,10 @@ const userSchema = new mongoose_1.default.Schema({
         type: String,
         default: "regular",
     },
+    pushToken: {
+        type: String,
+        default: "",
+    },
 }, {
     timestamps: true,
 });

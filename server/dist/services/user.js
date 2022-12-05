@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.findUsers = exports.updateLocation = exports.loginUser = exports.registerUser = void 0;
+exports.handlePushToken = exports.findUsers = exports.updateLocation = exports.loginUser = exports.registerUser = void 0;
 const userSchema_1 = __importDefault(require("../models/userSchema"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const bcrypt_1 = __importDefault(require("bcrypt"));
@@ -102,3 +102,7 @@ const findUsers = (filterObj, maxDistance, coords) => __awaiter(void 0, void 0, 
     return users;
 });
 exports.findUsers = findUsers;
+const handlePushToken = (pushToken, userId) => {
+    return userSchema_1.default.findByIdAndUpdate(userId, { pushToken }, { new: true }).populate("likes likedBy dislikes dislikedBy matches", "_id firstname lastname age gender images location city country");
+};
+exports.handlePushToken = handlePushToken;

@@ -19,8 +19,12 @@ var __rest = (this && this.__rest) || function (s, e) {
         }
     return t;
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getUsers = exports.patchLocation = exports.login = exports.register = void 0;
+exports.updatePushToken = exports.getUsers = exports.patchLocation = exports.login = exports.register = void 0;
+const mongoose_1 = __importDefault(require("mongoose"));
 const user_1 = require("../services/user");
 const register = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -91,3 +95,14 @@ const getUsers = (req, res, next) => __awaiter(void 0, void 0, void 0, function*
     }
 });
 exports.getUsers = getUsers;
+const updatePushToken = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const userId = new mongoose_1.default.Types.ObjectId(req.body.userId);
+        const user = yield (0, user_1.handlePushToken)(req.body.pushToken, userId);
+        res.status(201).json(user);
+    }
+    catch (error) {
+        next(error);
+    }
+});
+exports.updatePushToken = updatePushToken;
