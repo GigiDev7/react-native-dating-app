@@ -2,6 +2,7 @@ import User from "../models/userSchema";
 import { CustomError } from "../utils/customError";
 import { Types } from "mongoose";
 import { genPipelineObject } from "../utils/pipeline";
+import { pushNotifications } from "./notifications";
 
 export const likeUser = async (
   likedById: Types.ObjectId,
@@ -34,6 +35,14 @@ export const likeUser = async (
       );
     } else {
       if (user && likedUser) {
+        let messages = [
+          {
+            to: likedUser.pushToken,
+            body: "You got a new like",
+            data: { user: JSON.stringify(user) },
+          },
+        ];
+
         user.likes.push(userId);
         likedUser.likedBy.push(likedById);
         if (user.accountType === "regular") {
@@ -50,9 +59,24 @@ export const likeUser = async (
           user.matches.push(userId);
           likedUser.matches.push(likedById);
           isMatch = true;
+
+          messages = [
+            {
+              to: likedUser.pushToken,
+              body: "You got a match",
+              data: { user: JSON.stringify(user) },
+            },
+            {
+              to: user.pushToken,
+              body: "You got a match",
+              data: { user: JSON.stringify(likedUser) },
+            },
+          ];
         }
         await user.save();
         await likedUser.save();
+
+        await pushNotifications(messages);
 
         return { user, likedUser, isMatch };
       } else {

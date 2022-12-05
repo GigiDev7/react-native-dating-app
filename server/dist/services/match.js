@@ -16,6 +16,7 @@ exports.dislikeUser = exports.likeUser = void 0;
 const userSchema_1 = __importDefault(require("../models/userSchema"));
 const customError_1 = require("../utils/customError");
 const pipeline_1 = require("../utils/pipeline");
+const notifications_1 = require("./notifications");
 const likeUser = (likedById, userId) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const pipeline = (0, pipeline_1.genPipelineObject)();
@@ -39,6 +40,13 @@ const likeUser = (likedById, userId) => __awaiter(void 0, void 0, void 0, functi
         }
         else {
             if (user && likedUser) {
+                let messages = [
+                    {
+                        to: likedUser.pushToken,
+                        body: "You got a new like",
+                        data: { user: JSON.stringify(user) },
+                    },
+                ];
                 user.likes.push(userId);
                 likedUser.likedBy.push(likedById);
                 if (user.accountType === "regular") {
@@ -55,9 +63,22 @@ const likeUser = (likedById, userId) => __awaiter(void 0, void 0, void 0, functi
                     user.matches.push(userId);
                     likedUser.matches.push(likedById);
                     isMatch = true;
+                    messages = [
+                        {
+                            to: likedUser.pushToken,
+                            body: "You got a match",
+                            data: { user: JSON.stringify(user) },
+                        },
+                        {
+                            to: user.pushToken,
+                            body: "You got a match",
+                            data: { user: JSON.stringify(likedUser) },
+                        },
+                    ];
                 }
                 yield user.save();
                 yield likedUser.save();
+                yield (0, notifications_1.pushNotifications)(messages);
                 return { user, likedUser, isMatch };
             }
             else {

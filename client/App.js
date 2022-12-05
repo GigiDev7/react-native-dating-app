@@ -85,9 +85,9 @@ const Root = () => {
         );
 
         notificationListener.current =
-          Notifications.addNotificationReceivedListener((notf) =>
-            console.log(notf)
-          );
+          Notifications.addNotificationReceivedListener((notf) => {
+            console.log(notf.request.content.data);
+          });
 
         responseListener.current =
           Notifications.addNotificationResponseReceivedListener((response) => {

@@ -38,7 +38,7 @@
       [
         "expo-notifications",
         {
-          "icon": "./local/assets/tinder.png",
+          "icon": "./assets/tinder.png",
           "color": "#ffffff"
         }
       ]
