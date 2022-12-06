@@ -11,6 +11,7 @@ import Button from "../components/ui/Button";
 import PricingModal from "../components/modals/PricingModal";
 import { useSelector } from "react-redux";
 import { useModal } from "../hooks/useModal";
+import { capitalize } from "../utils/capitalize";
 
 const LikeScreen = () => {
   const { isModalShown, closeModal, openModal } = useModal();
@@ -42,7 +43,7 @@ const LikeScreen = () => {
               style={user?.accountType === "regular" ? styles.infoBlur : {}}
             >
               <Text style={styles.userInfo}>
-                {item.firstname}, {item.age}
+                {capitalize(item.firstname)}, {item.age}
               </Text>
             </View>
           </ImageBackground>

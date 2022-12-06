@@ -1,6 +1,7 @@
 import { FlatList, Image, StyleSheet, Text, Pressable } from "react-native";
 import { BASE_URL, Colors } from "../utils/constants";
 import { useNavigation } from "@react-navigation/native";
+import { capitalize } from "../utils/capitalize";
 
 const MatchCard = ({ direction, data }) => {
   const navigation = useNavigation();
@@ -41,7 +42,7 @@ const MatchCard = ({ direction, data }) => {
                 : styles.namePrimary
             }
           >
-            {item.firstname}
+            {capitalize(item.firstname)}
           </Text>
         </Pressable>
       )}

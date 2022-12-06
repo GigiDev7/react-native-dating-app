@@ -1,14 +1,17 @@
 import { Image, StyleSheet, Text, View } from "react-native";
 import Button from "../components/ui/Button";
-import { Colors } from "../utils/constants";
+import { BASE_URL, Colors } from "../utils/constants";
 import { Fontisto, MaterialIcons } from "@expo/vector-icons";
 import PricingModal from "../components/modals/PricingModal";
 import ProfileEditModal from "../components/modals/ProfileEditModal";
 import { logoutUser } from "../store/auth";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useModal } from "../hooks/useModal";
+import { capitalize } from "../utils/capitalize";
 
 const ProfileScreen = () => {
+  const user = useSelector((state) => state.auth.user);
+
   const pricingModal = useModal();
   const editModal = useModal();
 
@@ -28,7 +31,10 @@ const ProfileScreen = () => {
         visible={editModal.isModalShown}
       />
       <View style={styles.infoContainer}>
-        <Image style={styles.image} source={require("../assets/profile.jpg")} />
+        <Image
+          style={styles.image}
+          source={{ uri: `${BASE_URL}/${user.images[0]}` }}
+        />
         <MaterialIcons
           onPress={editModal.openModal}
           style={styles.icon}
@@ -42,7 +48,9 @@ const ProfileScreen = () => {
           style={styles.logoutIcon}
           onPress={logout}
         />
-        <Text style={styles.name}>Giorgi, 25</Text>
+        <Text style={styles.name}>
+          {capitalize(user.firstname)}, {user.age}
+        </Text>
       </View>
       <View style={styles.footer}>
         <View style={styles.footerTextContainer}>

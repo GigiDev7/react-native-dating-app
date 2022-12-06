@@ -3,6 +3,7 @@ import { Image, StyleSheet, Text, View } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { BASE_URL, Colors } from "../utils/constants";
 import { useRoute } from "@react-navigation/native";
+import { capitalize } from "../utils/capitalize";
 
 const MessageBoxScreen = ({ navigation }) => {
   const route = useRoute();
@@ -25,7 +26,7 @@ const MessageBoxScreen = ({ navigation }) => {
               style={styles.headerImage}
               source={{ uri: `${BASE_URL}/${match.images[0]}` }}
             />
-            <Text style={styles.name}>{match.firstname}</Text>
+            <Text style={styles.name}>{capitalize(match.firstname)}</Text>
           </View>
         </View>
       ),
