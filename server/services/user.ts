@@ -3,7 +3,7 @@ import User from "../models/userSchema";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import { CustomError } from "../utils/customError";
-import mongoose, { ObjectId } from "mongoose";
+import mongoose, { ObjectId, PipelineStage } from "mongoose";
 import { genPipelineObject } from "../utils/pipeline";
 
 const createAccessToken = (userId: string | ObjectId) => {
@@ -94,6 +94,7 @@ export const updateLocation = async (
 };
 
 export const findUsers = async (
+  accountType: string,
   filterObj: {
     age?: any;
     gender?: string;
@@ -102,7 +103,7 @@ export const findUsers = async (
   maxDistance: number,
   coords: [number, number]
 ) => {
-  const users = await User.aggregate([
+  let aggPipeline: PipelineStage[] = [
     {
       $geoNear: {
         near: { type: "Point", coordinates: coords },
@@ -115,7 +116,13 @@ export const findUsers = async (
     {
       $unset: ["password", "__v", "createdAt", "updatedAt", "dist"],
     },
-  ]);
+  ];
+
+  if (accountType === "regular") {
+    aggPipeline.push({ $limit: 11 });
+  }
+
+  const users = await User.aggregate(aggPipeline);
   return users;
 };
 

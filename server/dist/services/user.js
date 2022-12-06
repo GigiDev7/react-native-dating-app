@@ -84,8 +84,8 @@ const updateLocation = (userId, locationData) => __awaiter(void 0, void 0, void 
     }
 });
 exports.updateLocation = updateLocation;
-const findUsers = (filterObj, maxDistance, coords) => __awaiter(void 0, void 0, void 0, function* () {
-    const users = yield userSchema_1.default.aggregate([
+const findUsers = (accountType, filterObj, maxDistance, coords) => __awaiter(void 0, void 0, void 0, function* () {
+    let aggPipeline = [
         {
             $geoNear: {
                 near: { type: "Point", coordinates: coords },
@@ -98,7 +98,11 @@ const findUsers = (filterObj, maxDistance, coords) => __awaiter(void 0, void 0, 
         {
             $unset: ["password", "__v", "createdAt", "updatedAt", "dist"],
         },
-    ]);
+    ];
+    if (accountType === "regular") {
+        aggPipeline.push({ $limit: 11 });
+    }
+    const users = yield userSchema_1.default.aggregate(aggPipeline);
     return users;
 });
 exports.findUsers = findUsers;

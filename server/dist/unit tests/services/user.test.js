@@ -94,7 +94,7 @@ describe("user services", () => {
     }));
     test("find users", () => __awaiter(void 0, void 0, void 0, function* () {
         userSchema_1.default.aggregate.mockResolvedValue([mockUser]);
-        const res = yield (0, user_1.findUsers)({ _id: "id" }, 20, [40, 40]);
+        const res = yield (0, user_1.findUsers)("regular", { _id: "id" }, 20, [40, 40]);
         expect(res).toEqual(expect.arrayContaining([mockUser]));
     }));
 });

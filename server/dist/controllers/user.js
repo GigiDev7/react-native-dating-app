@@ -65,7 +65,7 @@ const getUsers = (req, res, next) => __awaiter(void 0, void 0, void 0, function*
         const userGender = req.user.gender;
         const userId = req.user._id;
         const coords = req.user.location.coordinates;
-        const { likes, dislikes, matches, accounType } = req.user;
+        const { likes, dislikes, matches, accountType } = req.user;
         const filterObject = {
             _id: { $nin: [userId, ...likes, ...dislikes, ...matches] },
         };
@@ -85,7 +85,7 @@ const getUsers = (req, res, next) => __awaiter(void 0, void 0, void 0, function*
         let distance = 50;
         if (maxDistance)
             distance = +maxDistance;
-        const users = yield (0, user_1.findUsers)(filterObject, distance, coords);
+        const users = yield (0, user_1.findUsers)(accountType, filterObject, distance, coords);
         res.status(200).json(users);
     }
     catch (error) {

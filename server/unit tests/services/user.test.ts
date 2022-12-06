@@ -102,7 +102,7 @@ describe("user services", () => {
   test("find users", async () => {
     (User.aggregate as jest.Mock).mockResolvedValue([mockUser]);
 
-    const res = await findUsers({ _id: "id" }, 20, [40, 40]);
+    const res = await findUsers("regular", { _id: "id" }, 20, [40, 40]);
 
     expect(res).toEqual(expect.arrayContaining([mockUser]));
   });
