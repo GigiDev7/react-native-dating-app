@@ -8,6 +8,8 @@ import { logoutUser } from "../store/auth";
 import { useDispatch, useSelector } from "react-redux";
 import { useModal } from "../hooks/useModal";
 import { capitalize } from "../utils/capitalize";
+import { useEffect } from "react";
+import { getUsers } from "../store/users";
 
 const ProfileScreen = () => {
   const user = useSelector((state) => state.auth.user);
@@ -20,6 +22,10 @@ const ProfileScreen = () => {
   const logout = () => {
     dispatch(logoutUser());
   };
+
+  useEffect(() => {
+    dispatch(getUsers());
+  }, []);
 
   return (
     <View style={styles.container}>
