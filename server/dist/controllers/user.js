@@ -65,9 +65,7 @@ const getUsers = (req, res, next) => __awaiter(void 0, void 0, void 0, function*
         const userGender = req.user.gender;
         const userId = req.user._id;
         const coords = req.user.location.coordinates;
-        const likes = req.user.likes;
-        const dislikes = req.user.dislikes;
-        const matches = req.user.matches;
+        const { likes, dislikes, matches, accounType } = req.user;
         const filterObject = {
             _id: { $nin: [userId, ...likes, ...dislikes, ...matches] },
         };

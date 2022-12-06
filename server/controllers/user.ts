@@ -60,9 +60,7 @@ export const getUsers = async (
     const userGender = (req as any).user.gender;
     const userId = (req as any).user._id;
     const coords = (req as any).user.location.coordinates;
-    const likes = (req as any).user.likes;
-    const dislikes = (req as any).user.dislikes;
-    const matches = (req as any).user.matches;
+    const { likes, dislikes, matches, accounType } = (req as any).user;
 
     const filterObject: {
       age?: any;
