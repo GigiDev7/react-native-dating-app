@@ -1,10 +1,15 @@
 import { useLayoutEffect } from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
-import { Colors } from "../utils/constants";
+import { BASE_URL, Colors } from "../utils/constants";
+import { useRoute } from "@react-navigation/native";
 
 const MessageBoxScreen = ({ navigation }) => {
+  const route = useRoute();
+
   useLayoutEffect(() => {
+    const match = route.params.match;
+
     navigation.setOptions({
       header: () => (
         <View style={styles.header}>
@@ -18,9 +23,9 @@ const MessageBoxScreen = ({ navigation }) => {
           <View style={{ marginTop: 12 }}>
             <Image
               style={styles.headerImage}
-              source={require("../assets/profile.jpg")}
+              source={{ uri: `${BASE_URL}/${match.images[0]}` }}
             />
-            <Text style={styles.name}>Giorgi</Text>
+            <Text style={styles.name}>{match.firstname}</Text>
           </View>
         </View>
       ),

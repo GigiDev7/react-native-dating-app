@@ -6,7 +6,7 @@ import {
   Text,
   View,
 } from "react-native";
-import { Colors } from "../utils/constants";
+import { BASE_URL, Colors } from "../utils/constants";
 import Button from "../components/ui/Button";
 import PricingModal from "../components/modals/PricingModal";
 import { useSelector } from "react-redux";
@@ -35,13 +35,15 @@ const LikeScreen = () => {
         renderItem={({ item }) => (
           <ImageBackground
             blurRadius={user?.accountType === "regular" ? 70 : 0}
-            source={item}
+            source={`${BASE_URL}/${item.images[0]}`}
             style={styles.image}
           >
             <View
               style={user?.accountType === "regular" ? styles.infoBlur : {}}
             >
-              <Text style={styles.userInfo}>Giorgi, 25</Text>
+              <Text style={styles.userInfo}>
+                {item.firstname}, {item.age}
+              </Text>
             </View>
           </ImageBackground>
         )}

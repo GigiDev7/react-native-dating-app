@@ -91,8 +91,8 @@ export const updateLocation =
       const str = await AsyncStorage.getItem("user");
       const user = JSON.parse(str);
       user.location = data;
-      await AsyncStorage.setItem("user", JSON.stringify(newUser));
-      dispatch(authActions.setUser(newUser));
+      await AsyncStorage.setItem("user", JSON.stringify(user));
+      dispatch(authActions.setUser(user));
     } catch (error) {
       console.log(error?.response?.data);
     }

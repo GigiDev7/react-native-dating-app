@@ -1,25 +1,24 @@
-import {
-  FlatList,
-  Image,
-  StyleSheet,
-  Text,
-  View,
-  Pressable,
-} from "react-native";
-import image from "../assets/profile.jpg";
-import { Colors } from "../utils/constants";
+import { FlatList, Image, StyleSheet, Text, Pressable } from "react-native";
+import { BASE_URL, Colors } from "../utils/constants";
+import { useNavigation } from "@react-navigation/native";
 
-const MatchCard = ({ onPress, direction }) => {
+const MatchCard = ({ direction, data }) => {
+  const navigation = useNavigation();
+
+  const handleNavigation = (match) => {
+    navigation.navigate("MessageBox", { match });
+  };
+
   return (
     <FlatList
-      data={[image, image, image, image, image, image, image, image]}
+      data={data}
       horizontal={direction === "horizontal"}
       showsHorizontalScrollIndicator={false}
       showsVerticalScrollIndicator={false}
-      keyExtractor={() => Math.random()}
+      keyExtractor={(item) => item._id}
       renderItem={({ item }) => (
         <Pressable
-          onPress={onPress}
+          onPress={() => handleNavigation(item)}
           style={({ pressed }) => [
             direction === "vertical"
               ? styles.cardSecondary
@@ -33,7 +32,7 @@ const MatchCard = ({ onPress, direction }) => {
                 ? styles.imageSecondary
                 : styles.imagePrimary
             }
-            source={item}
+            source={`${BASE_URL}/${item.images[0]}`}
           />
           <Text
             style={
@@ -42,7 +41,7 @@ const MatchCard = ({ onPress, direction }) => {
                 : styles.namePrimary
             }
           >
-            Giorgi
+            {item.firstname}
           </Text>
         </Pressable>
       )}
