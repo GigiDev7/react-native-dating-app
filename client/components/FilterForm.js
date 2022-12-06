@@ -8,7 +8,6 @@ const FilterForm = () => {
     genders: [],
     ageMin: 18,
     ageMax: 80,
-    distanceMin: 0,
     distanceMax: 50,
   });
 
@@ -74,18 +73,8 @@ const FilterForm = () => {
       </View>
       <Text style={styles.title}>Distance preference</Text>
       <View style={styles.formControl}>
-        <Text>
-          Between {filterForm.distanceMin}km and {filterForm.distanceMax}km
-        </Text>
+        <Text>Max distance {filterForm.distanceMax}km</Text>
         <View style={styles.rangeContainer}>
-          <TextInput
-            onChangeText={(text) => handleRangeChange(text, "distanceMin")}
-            value={filterForm.distanceMin.toString()}
-            style={styles.input}
-            keyboardType="number-pad"
-            maxLength={2}
-          />
-          <Text style={{ marginHorizontal: 12 }}>-</Text>
           <TextInput
             onChangeText={(text) => handleRangeChange(text, "distanceMax")}
             value={filterForm.distanceMax.toString()}
