@@ -15,8 +15,7 @@ export const usersSlice = createSlice({
 export const usersActions = usersSlice.actions;
 
 export const getUsers =
-  (maxDistance, gender = ["female", "male"], minAge, maxAge) =>
-  async (dispatch) => {
+  (maxDistance, gender, minAge, maxAge) => async (dispatch) => {
     try {
       const url = new URL(`${BASE_URL}/user`);
       if (minAge) url.searchParams.append("minAge", minAge);
