@@ -19,7 +19,7 @@ const like = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () 
     try {
         const likedById = req.user._id;
         const userId = new mongoose_1.default.Types.ObjectId(req.params.userId);
-        const { user, likedUser, isMatch } = yield (0, match_1.likeUser)(likedById, userId);
+        const { resUser: user, likedUser, isMatch, } = yield (0, match_1.likeUser)(likedById, userId);
         res.status(200).json({ user, likedUser, isMatch });
     }
     catch (error) {

@@ -63,7 +63,7 @@ export const updateLocation = async (
     country: string;
   }
 ) => {
-  const pipeline = genPipelineObject();
+  /* const pipeline = genPipelineObject();
   const result = await User.aggregate([
     {
       $match: { _id: userId },
@@ -72,8 +72,8 @@ export const updateLocation = async (
       $unset: ["__v", "passsword"],
     },
     ...pipeline,
-  ]);
-  const user = result[0];
+  ]); */
+  const user = await User.findById(userId);
   if (user) {
     (user.location as any).type = "Point";
     user.city = locationData.city;
@@ -89,7 +89,7 @@ export const updateLocation = async (
     }
 
     await user.save();
-    return user;
+    return user.location;
   }
 };
 

@@ -96,7 +96,7 @@ describe("user services", () => {
       longitude: 42,
     });
 
-    expect(res!.location).toMatchObject({ coordinates: [42, 42] });
+    expect(res).toMatchObject({ coordinates: [42, 42] });
   });
 
   test("find users", async () => {

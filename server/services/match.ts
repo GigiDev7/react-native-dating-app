@@ -9,8 +9,7 @@ export const likeUser = async (
   userId: Types.ObjectId
 ) => {
   try {
-    const pipeline = genPipelineObject();
-    let isMatch = false;
+    /* const pipeline = genPipelineObject();
     const result = await User.aggregate([
       {
         $match: { _id: likedById },
@@ -19,8 +18,9 @@ export const likeUser = async (
         $unset: ["__v", "password"],
       },
       ...pipeline,
-    ]);
-    const user = result[0];
+    ]); */
+    let isMatch = false;
+    const user = await User.findById(likedById, "-password");
     const likedUser = await User.findById(userId, "-password");
 
     if (
@@ -55,7 +55,7 @@ export const likeUser = async (
           }
         }
 
-        if (user.likedBy.includes(userId)) {
+        if (user.likedBy.find((el: any) => el.equals(userId))) {
           user.matches.push(userId);
           likedUser.matches.push(likedById);
           isMatch = true;
@@ -73,12 +73,24 @@ export const likeUser = async (
             },
           ];
         }
+
         await user.save();
         await likedUser.save();
 
         await pushNotifications(messages);
 
-        return { user, likedUser, isMatch };
+        const pipeline = genPipelineObject();
+        const resUser = await User.aggregate([
+          {
+            $match: { _id: likedById },
+          },
+          {
+            $unset: ["__v", "password"],
+          },
+          ...pipeline,
+        ]);
+
+        return { resUser, likedUser, isMatch };
       } else {
         throw new CustomError("Data error", "Could not find user");
       }

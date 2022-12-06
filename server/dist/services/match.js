@@ -19,18 +19,18 @@ const pipeline_1 = require("../utils/pipeline");
 const notifications_1 = require("./notifications");
 const likeUser = (likedById, userId) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const pipeline = (0, pipeline_1.genPipelineObject)();
+        /* const pipeline = genPipelineObject();
+        const result = await User.aggregate([
+          {
+            $match: { _id: likedById },
+          },
+          {
+            $unset: ["__v", "password"],
+          },
+          ...pipeline,
+        ]); */
         let isMatch = false;
-        const result = yield userSchema_1.default.aggregate([
-            {
-                $match: { _id: likedById },
-            },
-            {
-                $unset: ["__v", "password"],
-            },
-            ...pipeline,
-        ]);
-        const user = result[0];
+        const user = yield userSchema_1.default.findById(likedById, "-password");
         const likedUser = yield userSchema_1.default.findById(userId, "-password");
         if (user &&
             user.accountType === "regular" &&
@@ -59,7 +59,7 @@ const likeUser = (likedById, userId) => __awaiter(void 0, void 0, void 0, functi
                         user.limitExpiration = 0;
                     }
                 }
-                if (user.likedBy.includes(userId)) {
+                if (user.likedBy.find((el) => el.equals(userId))) {
                     user.matches.push(userId);
                     likedUser.matches.push(likedById);
                     isMatch = true;
@@ -79,7 +79,17 @@ const likeUser = (likedById, userId) => __awaiter(void 0, void 0, void 0, functi
                 yield user.save();
                 yield likedUser.save();
                 yield (0, notifications_1.pushNotifications)(messages);
-                return { user, likedUser, isMatch };
+                const pipeline = (0, pipeline_1.genPipelineObject)();
+                const resUser = yield userSchema_1.default.aggregate([
+                    {
+                        $match: { _id: likedById },
+                    },
+                    {
+                        $unset: ["__v", "password"],
+                    },
+                    ...pipeline,
+                ]);
+                return { resUser, likedUser, isMatch };
             }
             else {
                 throw new customError_1.CustomError("Data error", "Could not find user");

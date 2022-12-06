@@ -41,9 +41,10 @@ const ProfileEditModal = ({ visible, closeModal }) => {
   const [images, setImages] = useState([]);
 
   useEffect(() => {
-    const initialImages = [...user.images];
+    let initialImages = [];
+    if (user?.images) initialImages = [...user.images];
     if (initialImages.length < 6) initialImages.length = 6;
-    initialImages.fill("", user.images.length);
+    initialImages.fill("", user?.images?.length || 0);
     setImages(initialImages);
   }, [user]);
 

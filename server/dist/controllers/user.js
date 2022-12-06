@@ -52,8 +52,8 @@ exports.login = login;
 const patchLocation = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const userId = req.params.userId;
-        const user = yield (0, user_1.updateLocation)(userId, req.body);
-        res.status(201).json(user);
+        const updatedLocation = yield (0, user_1.updateLocation)(userId, req.body);
+        res.status(201).json(updatedLocation);
     }
     catch (error) {
         next(error);

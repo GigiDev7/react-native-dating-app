@@ -11,6 +11,8 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { authActions, logoutUser, updatePushToken } from "./store/auth";
 import axios from "axios";
 import * as Notifications from "expo-notifications";
+import NotificationModal from "./components/modals/NotificationModal";
+import { useModal } from "./hooks/useModal";
 
 async function registerForPushNotificationsAsync() {
   let token;
@@ -68,6 +70,10 @@ const Root = () => {
   const user = useSelector((state) => state.auth.user);
   const timer = useSelector((state) => state.auth.timer);
 
+  const { isModalShown, closeModal, openModal } = useModal();
+
+  const [notfType, setNotfType] = useState();
+
   const dispatch = useDispatch();
 
   const notificationListener = useRef();
@@ -87,6 +93,12 @@ const Root = () => {
         notificationListener.current =
           Notifications.addNotificationReceivedListener((notf) => {
             console.log(notf.request.content.data);
+            if (notf.request.content.body.includes("match")) {
+              setNotfType("match");
+            } else {
+              setNotfType("like");
+            }
+            openModal();
           });
 
         responseListener.current =
@@ -127,6 +139,9 @@ const Root = () => {
 
   return (
     <NavigationContainer>
+      {isModalShown && (
+        <NotificationModal type={notfType} closeModal={closeModal} />
+      )}
       <Stack.Navigator>
         <Stack.Screen
           options={{ headerShown: false }}

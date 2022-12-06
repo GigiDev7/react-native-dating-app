@@ -90,7 +90,7 @@ describe("user services", () => {
             latitude: 42,
             longitude: 42,
         });
-        expect(res.location).toMatchObject({ coordinates: [42, 42] });
+        expect(res).toMatchObject({ coordinates: [42, 42] });
     }));
     test("find users", () => __awaiter(void 0, void 0, void 0, function* () {
         userSchema_1.default.aggregate.mockResolvedValue([mockUser]);

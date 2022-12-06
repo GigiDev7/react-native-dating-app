@@ -74,11 +74,14 @@ describe("match services", () => {
       return mockUser2;
     });
 
-    const { user, likedUser } = await likeUser(mockUser._id, mockUser2._id);
+    const { resUser: user, likedUser } = await likeUser(
+      mockUser._id,
+      mockUser2._id
+    );
 
-    expect(user.likes).toHaveLength(1);
+    expect((user as any).likes).toHaveLength(1);
     expect(likedUser.likedBy).toHaveLength(1);
-    expect(user.likesLimit).toBe(1);
+    expect((user as any).likesLimit).toBe(1);
   });
 
   test("like user:FAILURE", async () => {

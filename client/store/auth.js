@@ -87,7 +87,12 @@ export const updateLocation =
           country,
         }
       );
-      updateUser(data);
+      //updateUser(data);
+      const str = await AsyncStorage.getItem("user");
+      const user = JSON.parse(str);
+      user.location = data;
+      await AsyncStorage.setItem("user", JSON.stringify(newUser));
+      dispatch(authActions.setUser(newUser));
     } catch (error) {
       console.log(error?.response?.data);
     }

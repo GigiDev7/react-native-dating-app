@@ -82,7 +82,7 @@ describe("match services", () => {
                 return mockUser;
             return mockUser2;
         });
-        const { user, likedUser } = yield (0, match_1.likeUser)(mockUser._id, mockUser2._id);
+        const { resUser: user, likedUser } = yield (0, match_1.likeUser)(mockUser._id, mockUser2._id);
         expect(user.likes).toHaveLength(1);
         expect(likedUser.likedBy).toHaveLength(1);
         expect(user.likesLimit).toBe(1);

@@ -57,17 +57,17 @@ const loginUser = (email, password) => __awaiter(void 0, void 0, void 0, functio
 });
 exports.loginUser = loginUser;
 const updateLocation = (userId, locationData) => __awaiter(void 0, void 0, void 0, function* () {
-    const pipeline = (0, pipeline_1.genPipelineObject)();
-    const result = yield userSchema_1.default.aggregate([
-        {
-            $match: { _id: userId },
-        },
-        {
-            $unset: ["__v", "passsword"],
-        },
-        ...pipeline,
-    ]);
-    const user = result[0];
+    /* const pipeline = genPipelineObject();
+    const result = await User.aggregate([
+      {
+        $match: { _id: userId },
+      },
+      {
+        $unset: ["__v", "passsword"],
+      },
+      ...pipeline,
+    ]); */
+    const user = yield userSchema_1.default.findById(userId);
     if (user) {
         user.location.type = "Point";
         user.city = locationData.city;
@@ -80,7 +80,7 @@ const updateLocation = (userId, locationData) => __awaiter(void 0, void 0, void 
             user.location.coordinates[1] = locationData.latitude;
         }
         yield user.save();
-        return user;
+        return user.location;
     }
 });
 exports.updateLocation = updateLocation;

@@ -44,8 +44,8 @@ export const patchLocation = async (
 ) => {
   try {
     const userId = req.params.userId;
-    const user = await updateLocation(userId, req.body);
-    res.status(201).json(user);
+    const updatedLocation = await updateLocation(userId, req.body);
+    res.status(201).json(updatedLocation);
   } catch (error) {
     next(error);
   }
