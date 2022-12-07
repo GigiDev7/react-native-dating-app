@@ -3,32 +3,14 @@ import { StyleSheet, Text, TextInput, View } from "react-native";
 import { Colors } from "../utils/constants";
 import Checkbox from "./ui/Checkbox";
 
-const FilterForm = () => {
-  const [filterForm, setFilterForm] = useState({
-    genders: [],
-    ageMin: 18,
-    ageMax: 80,
-    distanceMax: 50,
-  });
-
-  const handleCheckGender = (gender) => {
-    setFilterForm((prev) => {
-      let newGenders;
-      if (prev.genders.includes(gender)) {
-        newGenders = prev.genders.filter((el) => el !== gender);
-      } else {
-        newGenders = [...prev.genders, gender];
-      }
-      return { ...prev, genders: newGenders };
-    });
-  };
-
-  const handleRangeChange = (num, property) => {
-    setFilterForm((prev) => {
-      return { ...prev, [property]: +num };
-    });
-  };
-
+const FilterForm = ({
+  handleCheckGender,
+  handleRangeChange,
+  genders,
+  ageMin,
+  ageMax,
+  distanceMax,
+}) => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Who you want to date</Text>
@@ -37,26 +19,26 @@ const FilterForm = () => {
           <Text>Men</Text>
           <Checkbox
             onPress={() => handleCheckGender("Male")}
-            checked={filterForm.genders.includes("Male")}
+            checked={genders.includes("Male")}
           />
         </View>
         <View style={styles.checkboxContainer}>
           <Text>Women</Text>
           <Checkbox
             onPress={() => handleCheckGender("Female")}
-            checked={filterForm.genders.includes("Female")}
+            checked={genders.includes("Female")}
           />
         </View>
       </View>
       <Text style={styles.title}>Age</Text>
       <View style={styles.formControl}>
         <Text>
-          Between {filterForm.ageMin} and {filterForm.ageMax}
+          Between {ageMin} and {ageMax}
         </Text>
         <View style={styles.rangeContainer}>
           <TextInput
             onChangeText={(text) => handleRangeChange(text, "ageMin")}
-            value={filterForm.ageMin.toString()}
+            value={ageMin.toString()}
             style={styles.input}
             keyboardType="number-pad"
             maxLength={2}
@@ -64,7 +46,7 @@ const FilterForm = () => {
           <Text style={{ marginHorizontal: 12 }}>-</Text>
           <TextInput
             onChangeText={(text) => handleRangeChange(text, "ageMax")}
-            value={filterForm.ageMax.toString()}
+            value={ageMax.toString()}
             style={styles.input}
             keyboardType="number-pad"
             maxLength={2}
@@ -73,11 +55,11 @@ const FilterForm = () => {
       </View>
       <Text style={styles.title}>Distance preference</Text>
       <View style={styles.formControl}>
-        <Text>Max distance {filterForm.distanceMax}km</Text>
+        <Text>Max distance {distanceMax}km</Text>
         <View style={styles.rangeContainer}>
           <TextInput
             onChangeText={(text) => handleRangeChange(text, "distanceMax")}
-            value={filterForm.distanceMax.toString()}
+            value={distanceMax.toString()}
             style={styles.input}
             keyboardType="number-pad"
             maxLength={2}
