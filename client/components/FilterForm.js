@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { StyleSheet, Text, TextInput, View } from "react-native";
 import { Colors } from "../utils/constants";
 import Checkbox from "./ui/Checkbox";

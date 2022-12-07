@@ -24,7 +24,6 @@ export const getUsers =
       if (maxDistance) url.searchParams.append("maxDistance", maxDistance);
       const { data } = await axios.get(url.href);
       dispatch(usersActions.setUsers(data));
-      console.log(data);
     } catch (error) {
       console.log(error);
     }

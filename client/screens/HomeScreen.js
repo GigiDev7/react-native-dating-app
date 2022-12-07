@@ -1,5 +1,5 @@
 import { useEffect, useLayoutEffect, useState } from "react";
-import { StyleSheet, View, Alert } from "react-native";
+import { StyleSheet, View, Alert, Text } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import FilterModal from "../components/modals/FilterModal";
 import ProfileCard from "../components/ProfileCard";
@@ -17,6 +17,8 @@ const HomeScreen = ({ navigation }) => {
     (state) => state.auth.user.location.coordinates
   );
   const userId = useSelector((state) => state.auth.user._id);
+
+  const fetchedUsers = useSelector((state) => state.users.users);
 
   useEffect(() => {
     (async () => {
@@ -63,7 +65,17 @@ const HomeScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <FilterModal visible={isModalShown} closeModal={closeModal} />
-      <ProfileCard />
+      {fetchedUsers.length ? (
+        <ProfileCard />
+      ) : (
+        <View
+          style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+        >
+          <Text style={{ fontSize: 18, fontWeight: "bold" }}>
+            No users found!
+          </Text>
+        </View>
+      )}
     </View>
   );
 };
