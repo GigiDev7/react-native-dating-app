@@ -107,14 +107,14 @@ export const findUsers = async (
     {
       $geoNear: {
         near: { type: "Point", coordinates: coords },
-        distanceField: "dist.calculated",
+        distanceField: "location.calculated",
         maxDistance: 1000 * maxDistance,
         spherical: true,
         query: filterObj,
       },
     },
     {
-      $unset: ["password", "__v", "createdAt", "updatedAt", "dist"],
+      $unset: ["password", "__v", "createdAt", "updatedAt"],
     },
   ];
 

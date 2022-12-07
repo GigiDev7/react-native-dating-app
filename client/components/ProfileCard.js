@@ -1,31 +1,51 @@
 import { View, ImageBackground, Text, StyleSheet } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { Colors } from "../utils/constants";
+import { BASE_URL, Colors } from "../utils/constants";
 import ProfileModal from "./modals/ProfileModal";
 import ProfileInfo from "./ProfileInfo";
 import HeartIcon from "./HeartIcon";
 import DislikeIcon from "./DislikeIcon";
 import { useModal } from "../hooks/useModal";
 
-const ProfileCard = () => {
+const ProfileCard = ({
+  changeIndex,
+  firstname,
+  age,
+  location,
+  bio,
+  images,
+  _id,
+}) => {
   const { isModalShown, openModal, closeModal } = useModal();
+
+  const likeUser = () => {
+    changeIndex();
+  };
+
+  const dislikeUser = () => {
+    changeIndex();
+  };
 
   return (
     <>
       <ProfileModal
-        name={"Giorgi"}
-        age={25}
-        location={50}
+        name={firstname}
+        age={age}
+        location={(location.calculated / 1000).toFixed()}
         closeModal={closeModal}
         visible={isModalShown}
-        bio="my bio !!!!!"
+        bio={bio}
       />
       <ImageBackground
         style={styles.bgImage}
-        source={require("../assets/profile.jpg")}
+        source={{ uri: `${BASE_URL}/${images[0]}` }}
       >
         <View style={styles.infoContainer}>
-          <ProfileInfo name="Giorgi" age={25} location={50} />
+          <ProfileInfo
+            name={firstname}
+            age={age}
+            location={(location.calculated / 1000).toFixed()}
+          />
           <View>
             <Ionicons
               onPress={openModal}
@@ -36,8 +56,8 @@ const ProfileCard = () => {
           </View>
         </View>
         <View style={styles.btnContainer}>
-          <DislikeIcon />
-          <HeartIcon />
+          <DislikeIcon onPress={dislikeUser} />
+          <HeartIcon onPress={likeUser} />
         </View>
       </ImageBackground>
     </>

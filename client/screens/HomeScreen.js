@@ -19,6 +19,11 @@ const HomeScreen = ({ navigation }) => {
   const userId = useSelector((state) => state.auth.user._id);
 
   const fetchedUsers = useSelector((state) => state.users.users);
+  const [userIndex, setUserIndex] = useState(0);
+
+  const changeIndex = () => {
+    setUserIndex((prev) => prev + 1);
+  };
 
   useEffect(() => {
     (async () => {
@@ -65,8 +70,8 @@ const HomeScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <FilterModal visible={isModalShown} closeModal={closeModal} />
-      {fetchedUsers.length ? (
-        <ProfileCard />
+      {fetchedUsers[userIndex] ? (
+        <ProfileCard {...fetchedUsers[userIndex]} changeIndex={changeIndex} />
       ) : (
         <View
           style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
