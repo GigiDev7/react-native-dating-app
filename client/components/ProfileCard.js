@@ -6,6 +6,7 @@ import ProfileInfo from "./ProfileInfo";
 import HeartIcon from "./HeartIcon";
 import DislikeIcon from "./DislikeIcon";
 import { useModal } from "../hooks/useModal";
+import { apiDislikeUser, apiLikeUser } from "../api/likes";
 
 const ProfileCard = ({
   changeIndex,
@@ -18,11 +19,13 @@ const ProfileCard = ({
 }) => {
   const { isModalShown, openModal, closeModal } = useModal();
 
-  const likeUser = () => {
+  const likeUser = async () => {
+    await apiLikeUser(_id);
     changeIndex();
   };
 
-  const dislikeUser = () => {
+  const dislikeUser = async () => {
+    await apiDislikeUser(_id);
     changeIndex();
   };
 
