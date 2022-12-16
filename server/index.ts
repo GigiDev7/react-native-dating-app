@@ -19,7 +19,9 @@ app.use("/user", userRouter);
 //error handler
 app.use(errorsHandler);
 
-app.listen(8000, () => {
+const PORT = process.env.PORT || 3030;
+
+app.listen(PORT, () => {
   connect();
   console.log(`App running on port ${8000}`);
 });
