@@ -1,8 +1,7 @@
 import { Expo, ExpoPushMessage } from "expo-server-sdk";
 
-const expo = new Expo();
-
 export const pushNotifications = async (messages: ExpoPushMessage[]) => {
+  const expo = new Expo();
   let chunks = expo.chunkPushNotifications(messages);
   let tickets: any = [];
 

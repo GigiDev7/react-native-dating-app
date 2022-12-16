@@ -9,8 +9,10 @@ const NotificationModal = ({ type, closeModal }) => {
 
   const handleNavigation = () => {
     if (type === "match") {
+      closeModal();
       navigation.navigate("Messages");
     } else {
+      closeModal();
       navigation.navigate("Likes");
     }
   };

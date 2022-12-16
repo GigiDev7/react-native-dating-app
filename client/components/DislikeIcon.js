@@ -6,7 +6,7 @@ const DislikeIcon = ({ style, onPress }) => {
   return (
     <Ionicons
       onPress={onPress}
-      name="heart"
+      name="close"
       size={24}
       style={[styles.icon, style]}
     />

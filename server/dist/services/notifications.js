@@ -11,8 +11,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.pushNotifications = void 0;
 const expo_server_sdk_1 = require("expo-server-sdk");
-const expo = new expo_server_sdk_1.Expo();
 const pushNotifications = (messages) => __awaiter(void 0, void 0, void 0, function* () {
+    const expo = new expo_server_sdk_1.Expo();
     let chunks = expo.chunkPushNotifications(messages);
     let tickets = [];
     for (let chunk of chunks) {

@@ -67,7 +67,7 @@ export const logoutUser = () => async (dispatch) => {
   dispatch(authActions.logout());
 };
 
-const updateUser = (newUser) => async (dispatch) => {
+export const updateUser = (newUser) => async (dispatch) => {
   const str = await AsyncStorage.getItem("user");
   const user = JSON.parse(str);
   newUser.token = user.token;

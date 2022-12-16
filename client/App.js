@@ -86,9 +86,11 @@ const Root = () => {
         const expiresAt = await AsyncStorage.getItem("expiresAt");
         const remainingTime = +expiresAt - new Date().getTime();
 
-        registerForPushNotificationsAsync().then((token) =>
-          dispatch(updatePushToken(JSON.parse(user)._id, token))
-        );
+        if (!JSON.parse(user).pushToken) {
+          registerForPushNotificationsAsync().then((token) =>
+            dispatch(updatePushToken(JSON.parse(user)._id, token))
+          );
+        }
 
         notificationListener.current =
           Notifications.addNotificationReceivedListener((notf) => {
@@ -122,10 +124,14 @@ const Root = () => {
 
     return () => {
       clearTimeout(timer);
-      Notifications.removeNotificationSubscription(
-        notificationListener.current
-      );
-      Notifications.removeNotificationSubscription(responseListener.current);
+      if (notificationListener.current) {
+        Notifications.removeNotificationSubscription(
+          notificationListener.current
+        );
+      }
+      if (responseListener.current) {
+        Notifications.removeNotificationSubscription(responseListener.current);
+      }
     };
   }, []);
 

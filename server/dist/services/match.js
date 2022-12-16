@@ -63,7 +63,9 @@ const likeUser = (likedById, userId) => __awaiter(void 0, void 0, void 0, functi
                     user.matches.push(userId);
                     likedUser.matches.push(likedById);
                     user.likes = user.likes.filter((el) => !el.equals(userId));
+                    user.likedBy = user.likedBy.filter((el) => !el.equals(userId));
                     likedUser.likedBy = likedUser.likedBy.filter((el) => !el.equals(likedById));
+                    likedUser.likes = likedUser.likes.filter((el) => !el.equals(likedById));
                     isMatch = true;
                     messages = [
                         {

@@ -5,7 +5,7 @@ const HeartIcon = ({ style, onPress }) => {
   return (
     <Ionicons
       onPress={onPress}
-      name="close"
+      name="heart"
       size={24}
       style={[styles.icon, style]}
     />

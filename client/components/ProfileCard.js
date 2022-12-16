@@ -7,6 +7,8 @@ import HeartIcon from "./HeartIcon";
 import DislikeIcon from "./DislikeIcon";
 import { useModal } from "../hooks/useModal";
 import { apiDislikeUser, apiLikeUser } from "../api/likes";
+import { useDispatch } from "react-redux";
+import { updateUser } from "../store/auth";
 
 const ProfileCard = ({
   changeIndex,
@@ -19,8 +21,11 @@ const ProfileCard = ({
 }) => {
   const { isModalShown, openModal, closeModal } = useModal();
 
+  const dispatch = useDispatch();
+
   const likeUser = async () => {
-    await apiLikeUser(_id);
+    const { data } = await apiLikeUser(_id);
+    dispatch(updateUser(data.user));
     changeIndex();
   };
 

@@ -18,7 +18,8 @@ app.use("/images", express_1.default.static("images"));
 app.use("/user", user_1.default);
 //error handler
 app.use(errorsHandler_1.errorsHandler);
-app.listen(8000, () => {
+const PORT = process.env.PORT || 8000;
+app.listen(PORT, () => {
     (0, connectDB_1.connect)();
     console.log(`App running on port ${8000}`);
 });
