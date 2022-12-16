@@ -7,7 +7,6 @@ import {
   TextInput,
   View,
   KeyboardAvoidingView,
-  Button,
 } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { BASE_URL, Colors, SOCKET_URL } from "../utils/constants";
@@ -16,14 +15,32 @@ import { capitalize } from "../utils/capitalize";
 import { io } from "socket.io-client";
 import { useSelector } from "react-redux";
 import { Keyboard } from "react-native";
+import { useState } from "react";
 
 const MessageBoxScreen = ({ navigation }) => {
   const user = useSelector((state) => state.auth.user);
   const route = useRoute();
   const match = route.params.match;
+  const socket = io(SOCKET_URL);
+
+  const [message, setMessage] = useState("");
+
+  const hideInput = (e) => {
+    const isDisabled = e.target.viewConfig.validAttributes.disabled;
+    if (!isDisabled) Keyboard.dismiss();
+  };
+
+  const handleMessageChange = (text) => {
+    setMessage(text);
+  };
+
+  const handleMessageSend = () => {
+    console.log(message);
+    Keyboard.dismiss();
+    setMessage("");
+  };
 
   useEffect(() => {
-    const socket = io(SOCKET_URL);
     socket.on("connect", () => {
       socket.emit("get-ids", user._id, match._id);
     });
@@ -65,16 +82,24 @@ const MessageBoxScreen = ({ navigation }) => {
       behavior="padding"
       keyboardVerticalOffset={120}
     >
-      <Pressable onPress={() => Keyboard.dismiss()} style={styles.container}>
-        <Text>message box</Text>
+      <Pressable onPress={hideInput} style={styles.container}>
+        <View style={styles.messageBox}>
+          <Text>message box</Text>
+        </View>
         <View style={styles.inputBox}>
           <TextInput
             style={styles.input}
             multiline={true}
             placeholder="Type a message"
+            value={message}
+            onChangeText={handleMessageChange}
           />
-          <Pressable style={styles.btnContainer}>
-            <Text style={styles.btn}>Send</Text>
+          <Pressable
+            disabled={!message}
+            onPress={handleMessageSend}
+            style={styles.btnContainer}
+          >
+            <Text style={message ? styles.btn : styles.btnDisabled}>Send</Text>
           </Pressable>
         </View>
       </Pressable>
@@ -88,6 +113,9 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     paddingBottom: 24,
+  },
+  messageBox: {
+    paddingTop: 25,
   },
   inputBox: {
     width: "90%",
@@ -106,20 +134,24 @@ const styles = StyleSheet.create({
   },
   btnContainer: {
     position: "absolute",
-    bottom: 12,
+    bottom: 10,
     right: 10,
   },
   btn: {
     color: "blue",
     fontSize: 18,
   },
+  btnDisabled: {
+    fontSize: 18,
+    color: Colors.gray,
+  },
   header: {
     width: "100%",
     flexDirection: "row",
     alignItems: "center",
     shadowColor: "black",
-    shadowRadius: 6,
-    shadowOpacity: 0.7,
+    shadowRadius: 5,
+    shadowOpacity: 0.5,
     shadowOffset: { width: 2, height: 4 },
     borderBottomWidth: 1,
     borderBottomColor: Colors.gray500,
