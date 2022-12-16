@@ -1,16 +1,25 @@
-import { useLayoutEffect } from "react";
+import { useEffect, useLayoutEffect } from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
-import { BASE_URL, Colors } from "../utils/constants";
+import { BASE_URL, Colors, SOCKET_URL } from "../utils/constants";
 import { useRoute } from "@react-navigation/native";
 import { capitalize } from "../utils/capitalize";
+import { io } from "socket.io-client";
+import { useSelector } from "react-redux";
 
 const MessageBoxScreen = ({ navigation }) => {
+  const user = useSelector((state) => state.auth.user);
   const route = useRoute();
+  const match = route.params.match;
+
+  useEffect(() => {
+    const socket = io(SOCKET_URL);
+    socket.on("connect", () => {
+      socket.emit("get-ids", user._id, match._id);
+    });
+  }, []);
 
   useLayoutEffect(() => {
-    const match = route.params.match;
-
     navigation.setOptions({
       header: () => (
         <View style={styles.header}>

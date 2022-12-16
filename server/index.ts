@@ -4,6 +4,7 @@ import cors from "cors";
 import { connect } from "./connectDB";
 import { errorsHandler } from "./middlewares/errorsHandler";
 import userRouter from "./routes/user";
+import "./socket";
 
 dotenv.config();
 
