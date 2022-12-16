@@ -1,11 +1,21 @@
 import { useEffect, useLayoutEffect } from "react";
-import { Image, StyleSheet, Text, View } from "react-native";
+import {
+  Image,
+  Pressable,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+  KeyboardAvoidingView,
+  Button,
+} from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { BASE_URL, Colors, SOCKET_URL } from "../utils/constants";
 import { useRoute } from "@react-navigation/native";
 import { capitalize } from "../utils/capitalize";
 import { io } from "socket.io-client";
 import { useSelector } from "react-redux";
+import { Keyboard } from "react-native";
 
 const MessageBoxScreen = ({ navigation }) => {
   const user = useSelector((state) => state.auth.user);
@@ -17,6 +27,13 @@ const MessageBoxScreen = ({ navigation }) => {
     socket.on("connect", () => {
       socket.emit("get-ids", user._id, match._id);
     });
+    socket.on("get-messagebox", (messageBox) => {
+      console.log(messageBox);
+    });
+
+    return () => {
+      socket.close();
+    };
   }, []);
 
   useLayoutEffect(() => {
@@ -43,15 +60,58 @@ const MessageBoxScreen = ({ navigation }) => {
   }, []);
 
   return (
-    <View style={styles.container}>
-      <Text>message box</Text>
-    </View>
+    <KeyboardAvoidingView
+      style={{ flex: 1 }}
+      behavior="padding"
+      keyboardVerticalOffset={120}
+    >
+      <Pressable onPress={() => Keyboard.dismiss()} style={styles.container}>
+        <Text>message box</Text>
+        <View style={styles.inputBox}>
+          <TextInput
+            style={styles.input}
+            multiline={true}
+            placeholder="Type a message"
+          />
+          <Pressable style={styles.btnContainer}>
+            <Text style={styles.btn}>Send</Text>
+          </Pressable>
+        </View>
+      </Pressable>
+    </KeyboardAvoidingView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingBottom: 24,
+  },
+  inputBox: {
+    width: "90%",
+    borderRadius: "20px",
+    borderColor: Colors.gray,
+    borderWidth: "1px",
+    paddingVertical: 10,
+    paddingHorizontal: 12,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  input: {
+    width: "80%",
+    position: "relative",
+  },
+  btnContainer: {
+    position: "absolute",
+    bottom: 12,
+    right: 10,
+  },
+  btn: {
+    color: "blue",
+    fontSize: 18,
   },
   header: {
     width: "100%",
