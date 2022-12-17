@@ -18,7 +18,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { Keyboard } from "react-native";
 import { useState } from "react";
 import { messageBoxActions } from "../store/message";
-import { formatDate } from "../utils/formatDate";
+import Message from "../components/Message";
 
 const MessageBoxScreen = ({ navigation }) => {
   const user = useSelector((state) => state.auth.user);
@@ -100,30 +100,11 @@ const MessageBoxScreen = ({ navigation }) => {
             <FlatList
               data={messageBox.messages}
               keyExtractor={(item) => `${item.date}-${item.author}`}
-              renderItem={({ item }) => (
-                <Pressable
-                  style={({ pressed }) => [
-                    user._id === item.author
-                      ? styles.messageContainerPrimary
-                      : styles.messageContainerSecondary,
-                    pressed && styles.pressed,
-                  ]}
-                >
-                  <Text
-                    style={
-                      user._id === item.author
-                        ? styles.messageTextPrimary
-                        : styles.messageTextSecondary
-                    }
-                  >
-                    {item.message}
-                  </Text>
-                  <Text>{formatDate(item.date)}</Text>
-                </Pressable>
-              )}
+              renderItem={({ item }) => <Message message={item} />}
             />
           )}
         </View>
+
         <View style={styles.inputBox}>
           <TextInput
             style={styles.input}
@@ -183,35 +164,6 @@ const styles = StyleSheet.create({
   btnDisabled: {
     fontSize: 18,
     color: Colors.gray,
-  },
-  messageContainerPrimary: {
-    backgroundColor: Colors.secondary,
-    paddingVertical: 10,
-    paddingHorizontal: 14,
-    borderTopLeftRadius: 8,
-    borderBottomLeftRadius: 8,
-    borderTopRightRadius: 8,
-    alignSelf: "flex-end",
-    marginTop: 12,
-  },
-  messageContainerSecondary: {
-    backgroundColor: Colors.gray,
-    paddingVertical: 10,
-    paddingHorizontal: 14,
-    borderTopRightRadius: 8,
-    borderBottomRightRadius: 8,
-    borderTopLeftRadius: 8,
-    alignSelf: "flex-start",
-    marginTop: 12,
-  },
-  messageTextPrimary: {
-    color: "white",
-  },
-  messageTextSecondary: {
-    color: "black",
-  },
-  pressed: {
-    opacity: 0.85,
   },
   header: {
     width: "100%",
