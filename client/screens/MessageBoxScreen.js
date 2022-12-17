@@ -7,23 +7,28 @@ import {
   TextInput,
   View,
   KeyboardAvoidingView,
+  FlatList,
 } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { BASE_URL, Colors, SOCKET_URL } from "../utils/constants";
 import { useRoute } from "@react-navigation/native";
 import { capitalize } from "../utils/capitalize";
 import { io } from "socket.io-client";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { Keyboard } from "react-native";
 import { useState } from "react";
+import { messageBoxActions } from "../store/message";
 
 const MessageBoxScreen = ({ navigation }) => {
   const user = useSelector((state) => state.auth.user);
+  const messageBox = useSelector((state) => state.message.messageBox);
   const route = useRoute();
   const match = route.params.match;
   const socket = io(SOCKET_URL);
 
   const [message, setMessage] = useState("");
+
+  const dispatch = useDispatch();
 
   const hideInput = (e) => {
     const isDisabled = e.target.viewConfig.validAttributes.disabled;
@@ -35,7 +40,13 @@ const MessageBoxScreen = ({ navigation }) => {
   };
 
   const handleMessageSend = () => {
-    console.log(message);
+    socket.emit(
+      "send-message",
+      messageBox._id,
+      user._id,
+      message,
+      new Date().toLocaleString()
+    );
     Keyboard.dismiss();
     setMessage("");
   };
@@ -45,7 +56,7 @@ const MessageBoxScreen = ({ navigation }) => {
       socket.emit("get-ids", user._id, match._id);
     });
     socket.on("get-messagebox", (messageBox) => {
-      console.log(messageBox);
+      dispatch(messageBoxActions.setMessageBox(messageBox));
     });
 
     return () => {
@@ -84,7 +95,32 @@ const MessageBoxScreen = ({ navigation }) => {
     >
       <Pressable onPress={hideInput} style={styles.container}>
         <View style={styles.messageBox}>
-          <Text>message box</Text>
+          {messageBox && messageBox.messages && (
+            <FlatList
+              data={messageBox.messages}
+              keyExtractor={(item) => `${item.date}-${item.author}`}
+              renderItem={({ item }) => (
+                <Pressable
+                  style={({ pressed }) => [
+                    user._id === item.author
+                      ? styles.messageContainerPrimary
+                      : styles.messageContainerSecondary,
+                    pressed && styles.pressed,
+                  ]}
+                >
+                  <Text
+                    style={
+                      user._id === item.author
+                        ? styles.messageTextPrimary
+                        : styles.messageTextSecondary
+                    }
+                  >
+                    {item.message}
+                  </Text>
+                </Pressable>
+              )}
+            />
+          )}
         </View>
         <View style={styles.inputBox}>
           <TextInput
@@ -112,10 +148,11 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "space-between",
     alignItems: "center",
-    paddingBottom: 24,
+    paddingVertical: 24,
   },
   messageBox: {
-    paddingTop: 25,
+    flex: 1,
+    width: "90%",
   },
   inputBox: {
     width: "90%",
@@ -144,6 +181,33 @@ const styles = StyleSheet.create({
   btnDisabled: {
     fontSize: 18,
     color: Colors.gray,
+  },
+  messageContainerPrimary: {
+    backgroundColor: Colors.secondary,
+    paddingVertical: 10,
+    paddingHorizontal: 14,
+    borderTopLeftRadius: 6,
+    borderBottomLeftRadius: 6,
+    borderTopRightRadius: 6,
+    alignSelf: "flex-end",
+    marginTop: 12,
+  },
+  messageContainerSecondary: {
+    backgroundColor: Colors.gray,
+    paddingVertical: 10,
+    paddingHorizontal: 14,
+    borderTopRightRadius: 6,
+    borderBottomRightRadius: 6,
+    borderTopLeftRadius: 6,
+  },
+  messageTextPrimary: {
+    color: "white",
+  },
+  messageTextSecondary: {
+    color: "black",
+  },
+  pressed: {
+    opacity: 0.85,
   },
   header: {
     width: "100%",

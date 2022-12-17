@@ -12,6 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const mongoose_1 = __importDefault(require("mongoose"));
 const socket_io_1 = require("socket.io");
 const messageSchema_1 = __importDefault(require("./models/messageSchema"));
 const io = new socket_io_1.Server(8888, {
@@ -27,11 +28,24 @@ io.on("connection", (socket) => {
         });
         if (!messageBox) {
             messageBox = yield messageSchema_1.default.create({
-                firstUser: firstUserId,
-                secondUser: secondUserId,
+                firstUser: new mongoose_1.default.Types.ObjectId(firstUserId),
+                secondUser: new mongoose_1.default.Types.ObjectId(secondUserId),
             });
         }
         io.emit("get-messagebox", messageBox);
+    }));
+    socket.on("send-message", (messageBoxId, authorId, message, date) => __awaiter(void 0, void 0, void 0, function* () {
+        const messageBox = yield messageSchema_1.default.findById(messageBoxId);
+        const newMessage = {
+            author: authorId,
+            message,
+            date,
+        };
+        if (messageBox) {
+            messageBox.messages.push(newMessage);
+            yield messageBox.save();
+            io.emit("get-messagebox", messageBox);
+        }
     }));
     socket.on("disconnect", () => {
         socket.disconnect();

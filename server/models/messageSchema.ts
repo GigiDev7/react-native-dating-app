@@ -1,5 +1,15 @@
 import mongoose from "mongoose";
 
+export interface IMessage {
+  firstUser?: mongoose.Types.ObjectId;
+  secondUser?: mongoose.Types.ObjectId;
+  messages: {
+    message: string;
+    date: string;
+    author: mongoose.Types.ObjectId;
+  }[];
+}
+
 const message = new mongoose.Schema(
   {
     author: {
