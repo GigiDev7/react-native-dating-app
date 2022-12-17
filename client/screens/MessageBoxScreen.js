@@ -18,6 +18,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { Keyboard } from "react-native";
 import { useState } from "react";
 import { messageBoxActions } from "../store/message";
+import { formatDate } from "../utils/formatDate";
 
 const MessageBoxScreen = ({ navigation }) => {
   const user = useSelector((state) => state.auth.user);
@@ -117,6 +118,7 @@ const MessageBoxScreen = ({ navigation }) => {
                   >
                     {item.message}
                   </Text>
+                  <Text>{formatDate(item.date)}</Text>
                 </Pressable>
               )}
             />
@@ -186,9 +188,9 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.secondary,
     paddingVertical: 10,
     paddingHorizontal: 14,
-    borderTopLeftRadius: 6,
-    borderBottomLeftRadius: 6,
-    borderTopRightRadius: 6,
+    borderTopLeftRadius: 8,
+    borderBottomLeftRadius: 8,
+    borderTopRightRadius: 8,
     alignSelf: "flex-end",
     marginTop: 12,
   },
@@ -196,9 +198,11 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.gray,
     paddingVertical: 10,
     paddingHorizontal: 14,
-    borderTopRightRadius: 6,
-    borderBottomRightRadius: 6,
-    borderTopLeftRadius: 6,
+    borderTopRightRadius: 8,
+    borderBottomRightRadius: 8,
+    borderTopLeftRadius: 8,
+    alignSelf: "flex-start",
+    marginTop: 12,
   },
   messageTextPrimary: {
     color: "white",
